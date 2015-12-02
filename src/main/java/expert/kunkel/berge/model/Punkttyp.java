@@ -14,7 +14,7 @@ public class Punkttyp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PUNKTTYP_ID_GENERATOR", sequenceName="ID_PUNKTTYP")
+	@SequenceGenerator(name="PUNKTTYP_ID_GENERATOR", sequenceName="ID_PUNKTTYP", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PUNKTTYP_ID_GENERATOR")
 	private Integer id;
 

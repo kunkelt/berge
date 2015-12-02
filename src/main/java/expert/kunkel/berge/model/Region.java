@@ -26,7 +26,7 @@ public class Region implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="REGION_ID_GENERATOR", sequenceName="ID_REGION")
+	@SequenceGenerator(name="REGION_ID_GENERATOR", sequenceName="ID_REGION", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="REGION_ID_GENERATOR")
 	private Integer id;
 

@@ -24,7 +24,7 @@ public class Karte implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="KARTE_ID_GENERATOR", sequenceName="ID_KARTE")
+	@SequenceGenerator(name="KARTE_ID_GENERATOR", sequenceName="ID_KARTE", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="KARTE_ID_GENERATOR")
 	private Integer id;
 

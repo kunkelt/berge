@@ -19,7 +19,7 @@ public class Punkt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PUNKT_ID_GENERATOR", sequenceName="ID_PUNKT")
+	@SequenceGenerator(name="PUNKT_ID_GENERATOR", sequenceName="ID_PUNKT", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PUNKT_ID_GENERATOR")
 	private Integer id;
 

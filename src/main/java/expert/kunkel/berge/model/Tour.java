@@ -15,7 +15,7 @@ public class Tour implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TOUR_ID_GENERATOR", sequenceName="ID_TOUR")
+	@SequenceGenerator(name="TOUR_ID_GENERATOR", sequenceName="ID_TOUR", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TOUR_ID_GENERATOR")
 	private Integer id;
 
