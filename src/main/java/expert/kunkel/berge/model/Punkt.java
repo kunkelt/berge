@@ -1,7 +1,11 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import org.postgis.PGgeometry;
+
 import java.util.List;
 
 
@@ -23,7 +27,7 @@ public class Punkt implements Serializable {
 
 	private Integer hoehe;
 
-	private Object lage;
+	private PGgeometry lage;
 
 	private String name;
 
@@ -72,11 +76,11 @@ public class Punkt implements Serializable {
 		this.hoehe = hoehe;
 	}
 
-	public Object getLage() {
+	public PGgeometry getLage() {
 		return this.lage;
 	}
 
-	public void setLage(Object lage) {
+	public void setLage(PGgeometry lage) {
 		this.lage = lage;
 	}
 

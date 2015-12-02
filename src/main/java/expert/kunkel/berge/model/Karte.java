@@ -1,8 +1,17 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+
+import org.postgis.PGgeometry;
 
 
 /**
@@ -23,7 +32,7 @@ public class Karte implements Serializable {
 
 	private String blattnummer;
 
-	private Object extent;
+	private PGgeometry extent;
 
 	private String isbn;
 
@@ -68,11 +77,11 @@ public class Karte implements Serializable {
 		this.blattnummer = blattnummer;
 	}
 
-	public Object getExtent() {
+	public PGgeometry getExtent() {
 		return this.extent;
 	}
 
-	public void setExtent(Object extent) {
+	public void setExtent(PGgeometry extent) {
 		this.extent = extent;
 	}
 

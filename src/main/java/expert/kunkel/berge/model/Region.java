@@ -1,8 +1,19 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+import org.postgis.PGgeometry;
 
 
 /**
@@ -19,7 +30,7 @@ public class Region implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="REGION_ID_GENERATOR")
 	private Integer id;
 
-	private Object extent;
+	private PGgeometry extent;
 
 	private String name;
 
@@ -50,11 +61,11 @@ public class Region implements Serializable {
 		this.id = id;
 	}
 
-	public Object getExtent() {
+	public PGgeometry getExtent() {
 		return this.extent;
 	}
 
-	public void setExtent(Object extent) {
+	public void setExtent(PGgeometry extent) {
 		this.extent = extent;
 	}
 
