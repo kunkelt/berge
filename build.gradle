@@ -1,0 +1,47 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = '0.1-SNAPSHOT'
+group = 'expert.kunkel'
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Kunkels Berge', 'Implementation-Version': version
+	}
+}
+
+repositories {
+	mavenLocal()
+	maven {
+		url "https://repository.jboss.org/nexus/content/groups/public-jboss/"
+		url "http://download.osgeo.org/webdav/geotools/"
+	}
+	mavenCentral()
+	flatDir {
+		dirs 'libs'
+	}
+}
+
+dependencies {
+	compile 'expert.kunkel:core:0.3-SNAPSHOT'
+	compile name: 'org.boehn.kmlframework_20090718'
+	compile 'org.swinglabs:swingx-core:1.6.2-2'
+	compile 'se.kodapan.osm.common:tools:0.0.3-SNAPSHOT'
+	compile 'org.eclipse.persistence:eclipselink:2.5.2'
+	
+	runtime 'org.postgresql:postgresql:9.4-1201-jdbc41'
+
+}
+
+eclipse {
+	wtp {
+		facet {
+			facet name: 'jpt.jpa', version: '2.1'     // JPA 2.1
+		}
+	}
+}

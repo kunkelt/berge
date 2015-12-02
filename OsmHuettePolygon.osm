@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' upload='true' generator='JOSM'>
+  <node id='-9434' visible='true' lat='46.7061226' lon='12.4063235' />
+  <node id='-9433' visible='true' lat='46.7059929' lon='12.4063259' />
+  <node id='-9432' visible='true' lat='46.7060013' lon='12.4065137' />
+  <node id='-9431' visible='true' lat='46.7061214' lon='12.4065092' />
+  <node id='-9430' visible='true' lat='46.7061582' lon='12.4064517' />
+  <node id='-9429' visible='true' lat='46.7061575' lon='12.4063898' />
+  <way id='-9428' visible='true'>
+    <nd ref='-9429' />
+    <nd ref='-9430' />
+    <nd ref='-9431' />
+    <nd ref='-9432' />
+    <nd ref='-9433' />
+    <nd ref='-9434' />
+    <nd ref='-9429' />
+    <tag k='biergarten' v='yes' />
+    <tag k='building' v='yes' />
+    <tag k='ele' v='2455' />
+    <tag k='massif' v='Karnischer Hauptkamm' />
+    <tag k='name' v='Sillianer Hütte' />
+    <tag k='name_old' v='Viktor-Hinterberger-Hütte' />
+    <tag k='note' v='ele=2447 (source=sign on hut)' />
+    <tag k='source' v='geoimage.at' />
+    <tag k='start_date' v='1983-1986' />
+    <tag k='tourism' v='alpine_hut' />
+  </way>
+</osm>

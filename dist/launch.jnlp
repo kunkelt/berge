@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp codebase="file:/C:/Java/ws_indigo/privat/Berge2/dist/" href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>Digitale Tourendatenbank</title>
+        <vendor>Thorsten Kunkel</vendor>
+        <homepage href="http://kunkel.expert"/>
+        <description>Tourenbuch mit Verwaltung für Ein- und Mehrtagestouren, Karten, und Gebieten.</description>
+        <description kind="short">Digitale Tourendatenbank</description>
+
+
+    <offline-allowed/>
+</information>
+<security>
+<all-permissions/>
+</security>
+    <resources>
+<j2se version="1.5+"/>
+<jar eager="true" href="Berge2.jar" main="true"/>
+
+
+    <jar href="lib/appframework-1.0.3.jar"/>
+<jar href="lib/swing-worker-1.1.jar"/>
+<jar href="lib/beansbinding-1.2.1.jar"/>
+<jar href="lib/postgresql-8.3-603.jdbc3.jar"/>
+<jar href="lib/gt2-api-2.2.0.jar"/>
+<jar href="lib/gt2-main-2.2.0.jar"/>
+<jar href="lib/gt2-shapefile-2.2.0.jar"/>
+<jar href="lib/jts-1.7.1.jar"/>
+<jar href="lib/postgis_1.1.0.jar"/>
+<jar href="lib/TK_core_0.2.jar"/>
+<jar href="lib/org.boehn.kmlframework_20090718.jar"/>
+</resources>
+    <application-desc main-class="de.thorsten_kunkel.berge.gui.Berge">
+
+    </application-desc>
+</jnlp>
