@@ -1,11 +1,10 @@
-import java.io.FileNotFoundException;
+package expert.kunkel.berge.util;
+
 import java.io.FileReader;
 
-import de.thorsten_kunkel.berge.util.OsmParserListener;
 import junit.framework.TestCase;
 import se.kodapan.osm.parser.xml.streaming.StreamingOsmXmlParser;
 import se.kodapan.osm.parser.xml.streaming.StreamingOsmXmlParserListener;
-
 
 public class TestReadOSM extends TestCase {
 

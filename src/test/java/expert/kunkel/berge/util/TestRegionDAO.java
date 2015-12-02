@@ -1,20 +1,22 @@
+package expert.kunkel.berge.util;
 
-
-import java.io.*;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.sql.SQLException;
 import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.*;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
-import de.thorsten_kunkel.berge.dao.DAOFactory;
-import de.thorsten_kunkel.berge.dao.Region;
-import de.thorsten_kunkel.berge.dao.RegionDAO;
-import de.thorsten_kunkel.berge.ovl.*;
-import de.thorsten_kunkel.berge.util.*;
-import de.thorsten_kunkel.ttqv.jaxb.*;
+import expert.kunkel.berge.dao.DAOFactory;
+import expert.kunkel.berge.dao.Region;
+import expert.kunkel.berge.dao.RegionDAO;
+import expert.kunkel.berge.ovl.OVL_Flaeche;
+import expert.kunkel.ttqv.jaxb.Ttqv;
 
 public class TestRegionDAO extends TestCase {
 

@@ -1,13 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * SchaetzungP3.java
- *
- * Created on 22.11.2010, 16:32:29
- */
+package expert.kunkel.berge.util;
 
 /**
  *
