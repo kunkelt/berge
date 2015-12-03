@@ -12,7 +12,7 @@ public class GaleriebildPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="id_tour")
+	@Column(name="id_tour", insertable=false, updatable=false)
 	private Integer idTour;
 
 	private Integer sequenz;

@@ -16,13 +16,18 @@ public class Galeriebild implements Serializable {
 	@EmbeddedId
 	private GaleriebildPK id;
 
-	private Double breite;
+	private Integer breite;
 
 	private String dateiname;
 
-	private Double hoehe;
+	private Integer hoehe;
 
 	private String titel;
+
+	//bi-directional many-to-one association to Tour
+	@ManyToOne
+	@JoinColumn(name="id_tour")
+	private Tour tour;
 
 	public Galeriebild() {
 	}
@@ -35,11 +40,11 @@ public class Galeriebild implements Serializable {
 		this.id = id;
 	}
 
-	public Double getBreite() {
+	public Integer getBreite() {
 		return this.breite;
 	}
 
-	public void setBreite(Double breite) {
+	public void setBreite(Integer breite) {
 		this.breite = breite;
 	}
 
@@ -51,11 +56,11 @@ public class Galeriebild implements Serializable {
 		this.dateiname = dateiname;
 	}
 
-	public Double getHoehe() {
+	public Integer getHoehe() {
 		return this.hoehe;
 	}
 
-	public void setHoehe(Double hoehe) {
+	public void setHoehe(Integer hoehe) {
 		this.hoehe = hoehe;
 	}
 
@@ -65,6 +70,14 @@ public class Galeriebild implements Serializable {
 
 	public void setTitel(String titel) {
 		this.titel = titel;
+	}
+
+	public Tour getTour() {
+		return this.tour;
+	}
+
+	public void setTour(Tour tour) {
+		this.tour = tour;
 	}
 
 }

@@ -1,38 +1,42 @@
 package expert.kunkel.berge.dao.jpa;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import expert.kunkel.berge.dao.Galeriebild;
-import expert.kunkel.berge.dao.GaleriebildDAO;
-import expert.kunkel.berge.dao.Tour;
+import javax.persistence.EntityManager;
 
-public class JpaGaleriebildDao implements GaleriebildDAO {
+import expert.kunkel.berge.model.Galeriebild;
+import expert.kunkel.berge.model.GaleriebildPK;
+import expert.kunkel.berge.model.Tour;
 
-	@Override
+public class JpaGaleriebildDao {
+
 	public List<Galeriebild> selectGaleriebild() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.createQuery("SELECT gb FROM Galeriebild gb",
+				Galeriebild.class).getResultList();
 	}
 
-	@Override
 	public List<Galeriebild> selectGaleriebild(Tour tour) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public void insertGaleriebild(Galeriebild bild) throws SQLException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-
+	public Galeriebild insertGaleriebild(Galeriebild bild) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Galeriebild bild2 = em.merge(bild);
+		em.getTransaction().commit();
+		return bild2;
 	}
 
-	@Override
-	public boolean deleteGaleriebild(Tour tour) throws SQLException,
-			ClassNotFoundException {
+	public boolean deleteGaleriebild(Tour tour) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public Galeriebild findById(GaleriebildPK pk) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Galeriebild.class, pk);
 	}
 
 }

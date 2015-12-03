@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package expert.kunkel.berge.dao.postgresql;
 
 import expert.kunkel.berge.dao.Galeriebild;

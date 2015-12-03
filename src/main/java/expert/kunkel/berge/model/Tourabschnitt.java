@@ -19,12 +19,12 @@ public class Tourabschnitt implements Serializable {
 	//bi-directional many-to-one association to Punkt
 	@ManyToOne
 	@JoinColumn(name="nach_punkt")
-	private Punkt nach_punkt;
+	private Punkt nachPunkt;
 
 	//bi-directional many-to-one association to Punkt
 	@ManyToOne
 	@JoinColumn(name="von_punkt")
-	private Punkt von_punkt;
+	private Punkt vonPunkt;
 
 	public Tourabschnitt() {
 	}
@@ -37,20 +37,20 @@ public class Tourabschnitt implements Serializable {
 		this.id = id;
 	}
 
-	public Punkt getNach_punkt() {
-		return this.nach_punkt;
+	public Punkt getNachPunkt() {
+		return this.nachPunkt;
 	}
 
-	public void setNach_punkt(Punkt nach_punkt) {
-		this.nach_punkt = nach_punkt;
+	public void setNachPunkt(Punkt nachPunkt) {
+		this.nachPunkt = nachPunkt;
 	}
 
-	public Punkt getVon_punkt() {
-		return this.von_punkt;
+	public Punkt getVonPunkt() {
+		return this.vonPunkt;
 	}
 
-	public void setVon_punkt(Punkt von_punkt) {
-		this.von_punkt = von_punkt;
+	public void setVonPunkt(Punkt vonPunkt) {
+		this.vonPunkt = vonPunkt;
 	}
 
 }

@@ -1,12 +1,17 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.postgis.PGgeometry;
-
-import java.util.List;
 
 
 /**
@@ -42,12 +47,12 @@ public class Punkt implements Serializable {
 	private List<Region> regions;
 
 	//bi-directional many-to-one association to Tourabschnitt
-	@OneToMany(mappedBy="nach_punkt")
-	private List<Tourabschnitt> nach_tourabschnitte;
+	@OneToMany(mappedBy="nachPunkt")
+	private List<Tourabschnitt> nachTourabschnitt;
 
 	//bi-directional many-to-one association to Tourabschnitt
-	@OneToMany(mappedBy="von_punkt")
-	private List<Tourabschnitt> von_tourabschnitte;
+	@OneToMany(mappedBy="vonPunkt")
+	private List<Tourabschnitt> vonTourabschnitt;
 
 	public Punkt() {
 	}
@@ -138,48 +143,48 @@ public class Punkt implements Serializable {
 		return region;
 	}
 
-	public List<Tourabschnitt> getNach_tourabschnitte() {
-		return this.nach_tourabschnitte;
+	public List<Tourabschnitt> getNachTourabschnitt() {
+		return this.nachTourabschnitt;
 	}
 
-	public void setNach_tourabschnitte(List<Tourabschnitt> nach_tourabschnitte) {
-		this.nach_tourabschnitte = nach_tourabschnitte;
+	public void setNachTourabschnitt(List<Tourabschnitt> nachTourabschnitt) {
+		this.nachTourabschnitt = nachTourabschnitt;
 	}
 
-	public Tourabschnitt addNach_tourabschnitte(Tourabschnitt nach_tourabschnitte) {
-		getNach_tourabschnitte().add(nach_tourabschnitte);
-		nach_tourabschnitte.setNach_punkt(this);
+	public Tourabschnitt addNachTourabschnitt(Tourabschnitt nachTourabschnitt) {
+		getNachTourabschnitt().add(nachTourabschnitt);
+		nachTourabschnitt.setNachPunkt(this);
 
-		return nach_tourabschnitte;
+		return nachTourabschnitt;
 	}
 
-	public Tourabschnitt removeNach_tourabschnitte(Tourabschnitt nach_tourabschnitte) {
-		getNach_tourabschnitte().remove(nach_tourabschnitte);
-		nach_tourabschnitte.setNach_punkt(null);
+	public Tourabschnitt removeNachTourabschnitt(Tourabschnitt nachTourabschnitt) {
+		getNachTourabschnitt().remove(nachTourabschnitt);
+		nachTourabschnitt.setNachPunkt(null);
 
-		return nach_tourabschnitte;
+		return nachTourabschnitt;
 	}
 
-	public List<Tourabschnitt> getVon_tourabschnitte() {
-		return this.von_tourabschnitte;
+	public List<Tourabschnitt> getVonTourabschnitt() {
+		return this.vonTourabschnitt;
 	}
 
-	public void setVon_tourabschnitte(List<Tourabschnitt> von_tourabschnitte) {
-		this.von_tourabschnitte = von_tourabschnitte;
+	public void setVonTourabschnitt(List<Tourabschnitt> vonTourabschnitt) {
+		this.vonTourabschnitt = vonTourabschnitt;
 	}
 
-	public Tourabschnitt addVon_tourabschnitte(Tourabschnitt von_tourabschnitte) {
-		getVon_tourabschnitte().add(von_tourabschnitte);
-		von_tourabschnitte.setVon_punkt(this);
+	public Tourabschnitt addVonTourabschnitt(Tourabschnitt vonTourabschnitt) {
+		getVonTourabschnitt().add(vonTourabschnitt);
+		vonTourabschnitt.setVonPunkt(this);
 
-		return von_tourabschnitte;
+		return vonTourabschnitt;
 	}
 
-	public Tourabschnitt removeVon_tourabschnitte(Tourabschnitt von_tourabschnitte) {
-		getVon_tourabschnitte().remove(von_tourabschnitte);
-		von_tourabschnitte.setVon_punkt(null);
+	public Tourabschnitt removeVonTourabschnitt(Tourabschnitt vonTourabschnitt) {
+		getVonTourabschnitt().remove(vonTourabschnitt);
+		vonTourabschnitt.setVonPunkt(null);
 
-		return von_tourabschnitte;
+		return vonTourabschnitt;
 	}
 
 }

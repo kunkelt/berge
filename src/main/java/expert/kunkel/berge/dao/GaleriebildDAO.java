@@ -14,7 +14,12 @@ import java.util.List;
  */
 public interface GaleriebildDAO {
 	public List<Galeriebild> selectGaleriebild();
+
 	public List<Galeriebild> selectGaleriebild(Tour tour);
-        public void insertGaleriebild(Galeriebild bild) throws SQLException, ClassNotFoundException;
-        public boolean deleteGaleriebild(Tour tour) throws SQLException, ClassNotFoundException;
+
+	public void insertGaleriebild(Galeriebild bild) throws SQLException,
+			ClassNotFoundException;
+
+	public boolean deleteGaleriebild(Tour tour) throws SQLException,
+			ClassNotFoundException;
 }

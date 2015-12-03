@@ -44,11 +44,11 @@ public class Region implements Serializable {
 	//bi-directional many-to-one association to Region
 	@ManyToOne
 	@JoinColumn(name="oberregion")
-	private Region region;
+	private Region oberregion;
 
 	//bi-directional many-to-one association to Region
-	@OneToMany(mappedBy="region")
-	private List<Region> regions;
+	@OneToMany(mappedBy="oberregion")
+	private List<Region> regionen;
 
 	public Region() {
 	}
@@ -93,34 +93,34 @@ public class Region implements Serializable {
 		this.punkt = punkt;
 	}
 
-	public Region getRegion() {
-		return this.region;
+	public Region getOberregion() {
+		return this.oberregion;
 	}
 
-	public void setRegion(Region region) {
-		this.region = region;
+	public void setOberregion(Region oberregion) {
+		this.oberregion = oberregion;
 	}
 
-	public List<Region> getRegions() {
-		return this.regions;
+	public List<Region> getRegionen() {
+		return this.regionen;
 	}
 
-	public void setRegions(List<Region> regions) {
-		this.regions = regions;
+	public void setRegionen(List<Region> regionen) {
+		this.regionen = regionen;
 	}
 
-	public Region addRegion(Region region) {
-		getRegions().add(region);
-		region.setRegion(this);
+	public Region addRegionen(Region regionen) {
+		getRegionen().add(regionen);
+		regionen.setOberregion(this);
 
-		return region;
+		return regionen;
 	}
 
-	public Region removeRegion(Region region) {
-		getRegions().remove(region);
-		region.setRegion(null);
+	public Region removeRegionen(Region regionen) {
+		getRegionen().remove(regionen);
+		regionen.setOberregion(null);
 
-		return region;
+		return regionen;
 	}
 
 }

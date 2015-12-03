@@ -3,10 +3,13 @@ CREATE TABLE public.galeriebild
   id_tour integer NOT NULL,
   sequenz integer NOT NULL,
   dateiname character varying(256) NOT NULL,
-  breite real,
-  hoehe real,
+  breite integer,
+  hoehe integer,
   titel character varying(500) NOT NULL,
-  CONSTRAINT pk_bildergalerie PRIMARY KEY (id_tour, sequenz)
+  CONSTRAINT pk_bildergalerie PRIMARY KEY (id_tour, sequenz),
+  CONSTRAINT galeriebild_id_tour_fkey FOREIGN KEY (id_tour)
+      REFERENCES public.tour (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 CREATE TABLE public.karte

@@ -29,6 +29,10 @@ public class Tour implements Serializable {
 
 	private String zusatzinfo;
 
+	//bi-directional many-to-one association to Galeriebild
+	@OneToMany(mappedBy="tour")
+	private List<Galeriebild> galeriebilder;
+
 	//bi-directional many-to-many association to Karte
 	@ManyToMany
 	@JoinTable(
@@ -91,6 +95,28 @@ public class Tour implements Serializable {
 
 	public void setZusatzinfo(String zusatzinfo) {
 		this.zusatzinfo = zusatzinfo;
+	}
+
+	public List<Galeriebild> getGaleriebilder() {
+		return this.galeriebilder;
+	}
+
+	public void setGaleriebilder(List<Galeriebild> galeriebilder) {
+		this.galeriebilder = galeriebilder;
+	}
+
+	public Galeriebild addGaleriebilder(Galeriebild galeriebilder) {
+		getGaleriebilder().add(galeriebilder);
+		galeriebilder.setTour(this);
+
+		return galeriebilder;
+	}
+
+	public Galeriebild removeGaleriebilder(Galeriebild galeriebilder) {
+		getGaleriebilder().remove(galeriebilder);
+		galeriebilder.setTour(null);
+
+		return galeriebilder;
 	}
 
 	public List<Karte> getKarten() {

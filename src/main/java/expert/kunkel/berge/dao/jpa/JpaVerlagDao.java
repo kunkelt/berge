@@ -1,44 +1,26 @@
 package expert.kunkel.berge.dao.jpa;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import expert.kunkel.berge.dao.Verlag;
-import expert.kunkel.berge.dao.VerlagDAO;
+import javax.persistence.EntityManager;
 
-public class JpaVerlagDao implements VerlagDAO {
+import expert.kunkel.berge.model.Verlag;
 
-	@Override
-	public int insertVerlag(Verlag verlag) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
 
-	@Override
-	public boolean deleteVerlag(int id) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
+public class JpaVerlagDao {
 
-	@Override
-	public Verlag findVerlag() {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public boolean updateVerlag(Verlag verlag) throws SQLException,
-			ClassNotFoundException {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
 	public List<Verlag> selectVerlag() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.createQuery("SELECT v FROM Verlag v",Verlag.class).getResultList();
 	}
 
-	@Override
 	public List<Verlag> selectVerlag(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
+	}
+
+	public Verlag findById(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Verlag.class, id);
 	}
 
 }
