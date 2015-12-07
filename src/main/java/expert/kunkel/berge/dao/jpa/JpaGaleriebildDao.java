@@ -3,9 +3,9 @@ package expert.kunkel.berge.dao.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import expert.kunkel.berge.model.Galeriebild;
-import expert.kunkel.berge.model.GaleriebildPK;
 import expert.kunkel.berge.model.Tour;
 
 public class JpaGaleriebildDao {
@@ -17,8 +17,11 @@ public class JpaGaleriebildDao {
 	}
 
 	public List<Galeriebild> selectGaleriebild(Tour tour) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		TypedQuery<Galeriebild> query = em.createQuery("SELECT gb FROM Galeriebild gb WHERE gb.tour = :tour",
+				Galeriebild.class);
+		query.setParameter("tour", tour);
+		return query.getResultList();
 	}
 
 	public Galeriebild insertGaleriebild(Galeriebild bild) {
@@ -29,14 +32,18 @@ public class JpaGaleriebildDao {
 		return bild2;
 	}
 
-	public boolean deleteGaleriebild(Tour tour) {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteGaleriebild(Tour tour) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		for (Galeriebild gb : selectGaleriebild(tour)) {
+			em.remove(gb);
+		}
+		em.getTransaction().commit();
 	}
 
-	public Galeriebild findById(GaleriebildPK pk) {
+	public Galeriebild findById(Integer id) {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
-		return em.find(Galeriebild.class, pk);
+		return em.find(Galeriebild.class, id);
 	}
 
 }

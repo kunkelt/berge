@@ -46,6 +46,10 @@ public class Tour implements Serializable {
 		)
 	private List<Karte> karten;
 
+	//bi-directional many-to-one association to Tourentag
+	@OneToMany(mappedBy="tour")
+	private List<Tourentag> tourentage;
+
 	public Tour() {
 	}
 
@@ -125,6 +129,28 @@ public class Tour implements Serializable {
 
 	public void setKarten(List<Karte> karten) {
 		this.karten = karten;
+	}
+
+	public List<Tourentag> getTourentage() {
+		return this.tourentage;
+	}
+
+	public void setTourentage(List<Tourentag> tourentage) {
+		this.tourentage = tourentage;
+	}
+
+	public Tourentag addTourentage(Tourentag tourentage) {
+		getTourentage().add(tourentage);
+		tourentage.setTour(this);
+
+		return tourentage;
+	}
+
+	public Tourentag removeTourentage(Tourentag tourentage) {
+		getTourentage().remove(tourentage);
+		tourentage.setTour(null);
+
+		return tourentage;
 	}
 
 }

@@ -7,6 +7,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.junit.Ignore;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
@@ -18,6 +20,7 @@ import expert.kunkel.berge.dao.RegionDAO;
 import expert.kunkel.berge.ovl.OVL_Flaeche;
 import expert.kunkel.ttqv.jaxb.Ttqv;
 
+@Ignore
 public class TestRegionDAO extends TestCase {
 
 	private static final String PATH_POLYGONE_NICHT_IN_DB = "C:/Users/thorsten/Hobbies/Berge/Gebirgsgruppen/polygone_nicht_in_db/";
@@ -61,6 +64,7 @@ public class TestRegionDAO extends TestCase {
 		updateRegion(region);
 	}
 */
+	@Ignore
 	public void testReadDB_AndGenerateOVL() throws ParseException, IOException {
 		Region region = getRegion(ID_REGION);
 		String wkt = region.getExtent().toText();
@@ -120,6 +124,7 @@ public class TestRegionDAO extends TestCase {
 		raf.close();
 	}
 */
+	@Ignore
 	public void testReadTtqvAndUpdateDB() throws Exception {
 		Ttqv ttqv = TtqvUtilities.readTTQV_XML(PATH_KANTEN + "Kanten2_neu.xml");
 		Polygon polygon = TtqvUtilities.convertTtqvXML_ToPolygon(ttqv, names);

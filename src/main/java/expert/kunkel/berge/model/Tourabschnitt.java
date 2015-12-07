@@ -13,8 +13,17 @@ import javax.persistence.*;
 public class Tourabschnitt implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private TourabschnittPK id;
+	@Id
+	@SequenceGenerator(name="TOURABSCHNITT_ID_GENERATOR", sequenceName="ID_TOURABSCHNITT", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TOURABSCHNITT_ID_GENERATOR")
+	private Integer id;
+
+	@Column(name="id_tour")
+	private Integer idTour;
+
+	private Integer sequenz;
+
+	private Integer tag;
 
 	//bi-directional many-to-one association to Punkt
 	@ManyToOne
@@ -26,15 +35,44 @@ public class Tourabschnitt implements Serializable {
 	@JoinColumn(name="von_punkt")
 	private Punkt vonPunkt;
 
+	//bi-directional many-to-one association to Tourentag
+	@ManyToOne
+	@JoinColumn(name="id_tourentag")
+	private Tourentag tourentag;
+
 	public Tourabschnitt() {
 	}
 
-	public TourabschnittPK getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(TourabschnittPK id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getIdTour() {
+		return this.idTour;
+	}
+
+	public void setIdTour(Integer idTour) {
+		this.idTour = idTour;
+	}
+
+	public Integer getSequenz() {
+		return this.sequenz;
+	}
+
+	public void setSequenz(Integer sequenz) {
+		this.sequenz = sequenz;
+	}
+
+	public Integer getTag() {
+		return this.tag;
+	}
+
+	public void setTag(Integer tag) {
+		this.tag = tag;
 	}
 
 	public Punkt getNachPunkt() {
@@ -51,6 +89,14 @@ public class Tourabschnitt implements Serializable {
 
 	public void setVonPunkt(Punkt vonPunkt) {
 		this.vonPunkt = vonPunkt;
+	}
+
+	public Tourentag getTourentag() {
+		return this.tourentag;
+	}
+
+	public void setTourentag(Tourentag tourentag) {
+		this.tourentag = tourentag;
 	}
 
 }

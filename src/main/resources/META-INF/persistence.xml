@@ -4,7 +4,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="Berge" transaction-type="RESOURCE_LOCAL">
 		<class>expert.kunkel.berge.model.Galeriebild</class>
-		<class>expert.kunkel.berge.model.GaleriebildPK</class>
 		<class>expert.kunkel.berge.model.Karte</class>
 		<class>expert.kunkel.berge.model.Kartentyp</class>
 		<class>expert.kunkel.berge.model.Punkt</class>
@@ -12,9 +11,7 @@
 		<class>expert.kunkel.berge.model.Region</class>
 		<class>expert.kunkel.berge.model.Tour</class>
 		<class>expert.kunkel.berge.model.Tourabschnitt</class>
-		<class>expert.kunkel.berge.model.TourabschnittPK</class>
 		<class>expert.kunkel.berge.model.Tourentag</class>
-		<class>expert.kunkel.berge.model.TourentagPK</class>
 		<class>expert.kunkel.berge.model.Verlag</class>
 
 		<properties>

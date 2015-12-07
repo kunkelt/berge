@@ -1,6 +1,7 @@
 package expert.kunkel.berge.dao.jpa;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -10,8 +11,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import expert.kunkel.berge.dao.jpa.JpaDaoFactory;
-import expert.kunkel.berge.dao.jpa.JpaVerlagDao;
 import expert.kunkel.berge.model.Verlag;
 
 public class JpaVerlagDaoTest {
@@ -52,6 +51,16 @@ public class JpaVerlagDaoTest {
 				em.createNativeQuery(
 						"SELECT COUNT(*) FROM verlag WHERE id = "
 								+ verlag2.getId()).getSingleResult());
+	}
+
+	@Test
+	public void testSelectVerlagOld() {
+		try {
+			dao.selectVerlag(1);
+		} catch (UnsupportedOperationException e) {
+			return;
+		}
+		fail("Keine UnsupportedOperationException aufgetreten!");
 	}
 
 	@AfterClass

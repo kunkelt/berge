@@ -13,14 +13,18 @@ import javax.persistence.*;
 public class Galeriebild implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private GaleriebildPK id;
+	@Id
+	@SequenceGenerator(name="GALERIEBILD_ID_GENERATOR", sequenceName="ID_GALERIEBILD", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="GALERIEBILD_ID_GENERATOR")
+	private Integer id;
 
 	private Integer breite;
 
 	private String dateiname;
 
 	private Integer hoehe;
+
+	private Integer sequenz;
 
 	private String titel;
 
@@ -32,11 +36,11 @@ public class Galeriebild implements Serializable {
 	public Galeriebild() {
 	}
 
-	public GaleriebildPK getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(GaleriebildPK id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -62,6 +66,14 @@ public class Galeriebild implements Serializable {
 
 	public void setHoehe(Integer hoehe) {
 		this.hoehe = hoehe;
+	}
+
+	public Integer getSequenz() {
+		return this.sequenz;
+	}
+
+	public void setSequenz(Integer sequenz) {
+		this.sequenz = sequenz;
 	}
 
 	public String getTitel() {

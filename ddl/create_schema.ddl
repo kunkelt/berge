@@ -125,8 +125,13 @@ CREATE TABLE public.tourentag
   bilddatei character varying(256),
   bildtitel character varying(500),
   track polygon,
-  CONSTRAINT pk_tourentag PRIMARY KEY (id_tour, tag)
-);
+  id integer NOT NULL DEFAULT nextval('id_tourentag'::regclass),
+  CONSTRAINT tourentag_pkey PRIMARY KEY (id),
+  CONSTRAINT tourentag_id_tour_fkey FOREIGN KEY (id_tour)
+      REFERENCES public.tour (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT tourentag_id_tour_tag_key UNIQUE (id_tour, tag)
+)
 
 CREATE TABLE public.verlag
 (
@@ -174,6 +179,20 @@ CREATE SEQUENCE public.id_region
   CACHE 1;
   
 CREATE SEQUENCE public.id_tour
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+  
+CREATE SEQUENCE public.id_tourentag
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+  
+CREATE SEQUENCE public.id_tourabschnitt
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807

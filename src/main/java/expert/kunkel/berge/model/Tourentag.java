@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import org.postgresql.geometric.PGpolygon;
+import java.util.List;
 
 
 /**
@@ -15,8 +16,10 @@ import org.postgresql.geometric.PGpolygon;
 public class Tourentag implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private TourentagPK id;
+	@Id
+	@SequenceGenerator(name="TOURENTAG_ID_GENERATOR", sequenceName="ID_TOURENTAG", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TOURENTAG_ID_GENERATOR")
+	private Integer id;
 
 	private String beschreibung;
 
@@ -37,16 +40,27 @@ public class Tourentag implements Serializable {
 
 	private String schwierigkt;
 
+	private Integer tag;
+
 	private PGpolygon track;
+
+	//bi-directional many-to-one association to Tourabschnitt
+	@OneToMany(mappedBy="tourentag")
+	private List<Tourabschnitt> tourabschnitte;
+
+	//bi-directional many-to-one association to Tour
+	@ManyToOne
+	@JoinColumn(name="id_tour")
+	private Tour tour;
 
 	public Tourentag() {
 	}
 
-	public TourentagPK getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(TourentagPK id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -122,12 +136,50 @@ public class Tourentag implements Serializable {
 		this.schwierigkt = schwierigkt;
 	}
 
+	public Integer getTag() {
+		return this.tag;
+	}
+
+	public void setTag(Integer tag) {
+		this.tag = tag;
+	}
+
 	public PGpolygon getTrack() {
 		return this.track;
 	}
 
 	public void setTrack(PGpolygon track) {
 		this.track = track;
+	}
+
+	public List<Tourabschnitt> getTourabschnitte() {
+		return this.tourabschnitte;
+	}
+
+	public void setTourabschnitte(List<Tourabschnitt> tourabschnitte) {
+		this.tourabschnitte = tourabschnitte;
+	}
+
+	public Tourabschnitt addTourabschnitte(Tourabschnitt tourabschnitte) {
+		getTourabschnitte().add(tourabschnitte);
+		tourabschnitte.setTourentag(this);
+
+		return tourabschnitte;
+	}
+
+	public Tourabschnitt removeTourabschnitte(Tourabschnitt tourabschnitte) {
+		getTourabschnitte().remove(tourabschnitte);
+		tourabschnitte.setTourentag(null);
+
+		return tourabschnitte;
+	}
+
+	public Tour getTour() {
+		return this.tour;
+	}
+
+	public void setTour(Tour tour) {
+		this.tour = tour;
 	}
 
 }
