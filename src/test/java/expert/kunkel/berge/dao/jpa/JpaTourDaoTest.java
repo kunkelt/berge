@@ -90,7 +90,7 @@ public class JpaTourDaoTest {
 		tt1.setDatum(DateUtils.parseDate("2014-12-31", "yyyy-MM-dd"));
 		tt1.setTour(tour1);
 		tt1.setTag(1);
-		tt1.setRegion(region.getId()); // FIXME!
+		tt1.setRegion(region);
 		tt1 = JpaDaoFactory.getInstance().getTourentagDAO()
 				.insertTourentag(tt1);
 
@@ -98,7 +98,7 @@ public class JpaTourDaoTest {
 		tt2.setDatum(DateUtils.parseDate("2015-01-01", "yyyy-MM-dd"));
 		tt2.setTour(tour1);
 		tt2.setTag(2);
-		tt2.setRegion(region.getId()); // FIXME!
+		tt2.setRegion(region);
 		tt2 = JpaDaoFactory.getInstance().getTourentagDAO()
 				.insertTourentag(tt2);
 
