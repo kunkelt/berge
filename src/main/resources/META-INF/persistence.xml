@@ -8,11 +8,11 @@
 		<class>expert.kunkel.berge.model.Kartentyp</class>
 		<class>expert.kunkel.berge.model.Punkt</class>
 		<class>expert.kunkel.berge.model.Punkttyp</class>
-		<class>expert.kunkel.berge.model.Region</class>
 		<class>expert.kunkel.berge.model.Tour</class>
 		<class>expert.kunkel.berge.model.Tourabschnitt</class>
-		<class>expert.kunkel.berge.model.Tourentag</class>
 		<class>expert.kunkel.berge.model.Verlag</class>
+		<class>expert.kunkel.berge.model.Region</class>
+		<class>expert.kunkel.berge.model.Tourentag</class>
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

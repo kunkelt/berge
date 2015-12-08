@@ -44,7 +44,7 @@ public class Punkt implements Serializable {
 
 	//bi-directional many-to-one association to Region
 	@OneToMany(mappedBy="punkt")
-	private List<Region> regions;
+	private List<Region> regionen;
 
 	//bi-directional many-to-one association to Tourabschnitt
 	@OneToMany(mappedBy="nachPunkt")
@@ -121,26 +121,26 @@ public class Punkt implements Serializable {
 		this.url = url;
 	}
 
-	public List<Region> getRegions() {
-		return this.regions;
+	public List<Region> getRegionen() {
+		return this.regionen;
 	}
 
-	public void setRegions(List<Region> regions) {
-		this.regions = regions;
+	public void setRegionen(List<Region> regionen) {
+		this.regionen = regionen;
 	}
 
-	public Region addRegion(Region region) {
-		getRegions().add(region);
-		region.setPunkt(this);
+	public Region addRegionen(Region regionen) {
+		getRegionen().add(regionen);
+		regionen.setPunkt(this);
 
-		return region;
+		return regionen;
 	}
 
-	public Region removeRegion(Region region) {
-		getRegions().remove(region);
-		region.setPunkt(null);
+	public Region removeRegionen(Region regionen) {
+		getRegionen().remove(regionen);
+		regionen.setPunkt(null);
 
-		return region;
+		return regionen;
 	}
 
 	public List<Tourabschnitt> getNachTourabschnitt() {

@@ -1,6 +1,7 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import org.postgis.PGgeometry;
-
 
 /**
  * The persistent class for the region database table.
@@ -49,6 +49,10 @@ public class Region implements Serializable {
 	//bi-directional many-to-one association to Region
 	@OneToMany(mappedBy="oberregion")
 	private List<Region> regionen;
+
+	//bi-directional many-to-one association to Tourentag
+	@OneToMany(mappedBy="region")
+	private List<Tourentag> tourentage;
 
 	public Region() {
 	}
@@ -121,6 +125,28 @@ public class Region implements Serializable {
 		regionen.setOberregion(null);
 
 		return regionen;
+	}
+
+	public List<Tourentag> getTourentage() {
+		return this.tourentage;
+	}
+
+	public void setTourentage(List<Tourentag> tourentage) {
+		this.tourentage = tourentage;
+	}
+
+	public Tourentag addTourentage(Tourentag tourentage) {
+		getTourentage().add(tourentage);
+		tourentage.setRegion(this);
+
+		return tourentage;
+	}
+
+	public Tourentag removeTourentage(Tourentag tourentage) {
+		getTourentage().remove(tourentage);
+		tourentage.setRegion(null);
+
+		return tourentage;
 	}
 
 }

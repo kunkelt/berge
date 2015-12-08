@@ -36,8 +36,6 @@ public class Tourentag implements Serializable {
 
 	private Integer hmaufstieg;
 
-	private Integer region;
-
 	private String schwierigkt;
 
 	private Integer tag;
@@ -47,6 +45,11 @@ public class Tourentag implements Serializable {
 	//bi-directional many-to-one association to Tourabschnitt
 	@OneToMany(mappedBy="tourentag")
 	private List<Tourabschnitt> tourabschnitte;
+
+	//bi-directional many-to-one association to Region
+	@ManyToOne
+	@JoinColumn(name="region")
+	private Region region;
 
 	//bi-directional many-to-one association to Tour
 	@ManyToOne
@@ -120,14 +123,6 @@ public class Tourentag implements Serializable {
 		this.hmaufstieg = hmaufstieg;
 	}
 
-	public Integer getRegion() {
-		return this.region;
-	}
-
-	public void setRegion(Integer region) {
-		this.region = region;
-	}
-
 	public String getSchwierigkt() {
 		return this.schwierigkt;
 	}
@@ -172,6 +167,14 @@ public class Tourentag implements Serializable {
 		tourabschnitte.setTourentag(null);
 
 		return tourabschnitte;
+	}
+
+	public Region getRegion() {
+		return this.region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
 	}
 
 	public Tour getTour() {

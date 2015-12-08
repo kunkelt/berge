@@ -71,9 +71,9 @@ public class JpaTourDao {
 	public List<Tour> findTourInRegion(Region region) {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
 		String select = "SELECT t FROM Tour t LEFT JOIN t.tourentage tt "
-				+ "WHERE tt.region = :region";
+				+ "WHERE tt.region.id = :regionId";
 		TypedQuery<Tour> query = em.createQuery(select, Tour.class);
-		query.setParameter("region", region);
+		query.setParameter("regionId", region.getId());
 		return query.getResultList();
 	}
 

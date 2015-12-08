@@ -2,6 +2,7 @@ package expert.kunkel.berge.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -20,6 +21,10 @@ public class Kartentyp implements Serializable {
 
 	private String typ;
 
+	//bi-directional many-to-one association to Karte
+	@OneToMany(mappedBy="kartentyp")
+	private List<Karte> karten;
+
 	public Kartentyp() {
 	}
 
@@ -37,6 +42,28 @@ public class Kartentyp implements Serializable {
 
 	public void setTyp(String typ) {
 		this.typ = typ;
+	}
+
+	public List<Karte> getKarten() {
+		return this.karten;
+	}
+
+	public void setKarten(List<Karte> karten) {
+		this.karten = karten;
+	}
+
+	public Karte addKarten(Karte karten) {
+		getKarten().add(karten);
+		karten.setKartentyp(this);
+
+		return karten;
+	}
+
+	public Karte removeKarten(Karte karten) {
+		getKarten().remove(karten);
+		karten.setKartentyp(null);
+
+		return karten;
 	}
 
 }

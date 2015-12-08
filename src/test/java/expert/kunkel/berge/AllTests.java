@@ -6,11 +6,16 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import expert.kunkel.berge.dao.jpa.JpaDaoFactoryTest;
 import expert.kunkel.berge.dao.jpa.JpaGaleriebildDaoTest;
+import expert.kunkel.berge.dao.jpa.JpaKarteDaoTest;
+import expert.kunkel.berge.dao.jpa.JpaPunkttypDaoTest;
+import expert.kunkel.berge.dao.jpa.JpaRegionDaoTest;
+import expert.kunkel.berge.dao.jpa.JpaTourDaoTest;
 import expert.kunkel.berge.dao.jpa.JpaVerlagDaoTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ JpaDaoFactoryTest.class, JpaGaleriebildDaoTest.class,
-		JpaVerlagDaoTest.class })
+		JpaVerlagDaoTest.class, JpaPunkttypDaoTest.class, JpaTourDaoTest.class,
+	JpaKarteDaoTest.class, JpaRegionDaoTest.class })
 public class AllTests {
 
 }

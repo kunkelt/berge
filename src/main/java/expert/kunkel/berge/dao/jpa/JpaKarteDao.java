@@ -1,54 +1,44 @@
 package expert.kunkel.berge.dao.jpa;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import expert.kunkel.berge.dao.Karte;
-import expert.kunkel.berge.dao.KarteDAO;
+import javax.persistence.EntityManager;
 
-public class JpaKarteDao implements KarteDAO {
+import expert.kunkel.berge.model.Karte;
 
-	@Override
-	public int insertKarte(Karte karte) {
-		// TODO Auto-generated method stub
-		return 0;
+public class JpaKarteDao {
+
+	public Karte insertKarte(Karte karte) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Karte k = em.merge(karte);
+		em.getTransaction().commit();
+		return k;
 	}
 
-	@Override
-	public boolean deleteKarte(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteKarte(Karte karte) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		em.remove(karte);
+		em.getTransaction().commit();
 	}
 
-	@Override
-	public Karte findKarte() {
-		// TODO Auto-generated method stub
-		return null;
+	public Karte updateKarte(Karte karte) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Karte k = em.merge(karte);
+		em.getTransaction().commit();
+		return k;
 	}
 
-	@Override
-	public boolean updateKarte(Karte karte) throws SQLException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public List<Karte> selectKarte() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.createQuery("SELECT k FROM Karte k", Karte.class)
+				.getResultList();
 	}
 
-	@Override
-	public List<Karte> selectKarte(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Karte findById(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Karte.class, id);
 	}
-
-	@Override
-	public boolean transformExtent(Integer kartenId, Integer to) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

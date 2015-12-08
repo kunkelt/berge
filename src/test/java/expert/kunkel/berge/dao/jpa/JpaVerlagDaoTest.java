@@ -67,7 +67,7 @@ public class JpaVerlagDaoTest {
 	public static void tearDown() {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
-		em.createNativeQuery("TRUNCATE verlag").executeUpdate();
+		em.createNativeQuery("TRUNCATE verlag CASCADE").executeUpdate();
 		em.getTransaction().commit();
 	}
 }

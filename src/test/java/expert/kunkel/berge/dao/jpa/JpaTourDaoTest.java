@@ -15,6 +15,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import expert.kunkel.berge.model.Region;
 import expert.kunkel.berge.model.Tour;
 import expert.kunkel.berge.model.Tourentag;
 
@@ -49,6 +50,8 @@ public class JpaTourDaoTest {
 		tour2.setZusatzinfo(zusatzinfo);
 	}
 
+	private Region region;
+
 	@Test
 	public void test1_Insert() {
 		tour1 = dao.insertTour(tour1);
@@ -78,16 +81,30 @@ public class JpaTourDaoTest {
 
 	@Test
 	public void test4_TourInA_Year() throws ParseException {
+		region = new Region();
+		region.setName("Allgäu");
+		region = JpaDaoFactory.getInstance().getRegionDAO()
+				.insertRegion(region);
+
 		Tourentag tt1 = new Tourentag();
 		tt1.setDatum(DateUtils.parseDate("2014-12-31", "yyyy-MM-dd"));
 		tt1.setTour(tour1);
 		tt1.setTag(1);
+		tt1.setRegion(region.getId()); // FIXME!
+		tt1 = JpaDaoFactory.getInstance().getTourentagDAO()
+				.insertTourentag(tt1);
+
 		Tourentag tt2 = new Tourentag();
 		tt2.setDatum(DateUtils.parseDate("2015-01-01", "yyyy-MM-dd"));
 		tt2.setTour(tour1);
 		tt2.setTag(2);
+		tt2.setRegion(region.getId()); // FIXME!
+		tt2 = JpaDaoFactory.getInstance().getTourentagDAO()
+				.insertTourentag(tt2);
+
 		tour1.addTourentage(tt1);
 		tour1.addTourentage(tt2);
+
 		dao.updateTour(tour1);
 
 		assertEquals(0, dao.getAllToursForYear(2013).size());
@@ -97,7 +114,24 @@ public class JpaTourDaoTest {
 	}
 
 	@Test
+	public void test5_FindUsedRegions() {
+		assertEquals(1, JpaDaoFactory.getInstance().getRegionDAO()
+				.findUsedRegions().size());
+	}
+
+	@Test
+	public void test6_FindTourInRegion() {
+		List<Tour> touren = dao.findTourInRegion(region);
+		assertEquals(1, touren.size());
+		assertEquals(tour1, touren.get(0));
+	}
+
+	@Test
 	public void test9_Delete() {
+		for (Tourentag tt : tour1.getTourentage()) {
+			JpaDaoFactory.getInstance().getTourentagDAO().deleteTourentag(tt);
+		}
+
 		dao.deleteTour(tour1);
 		dao.deleteTour(tour2);
 
@@ -110,6 +144,8 @@ public class JpaTourDaoTest {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE tour CASCADE").executeUpdate();
+		em.createNativeQuery("TRUNCATE tourentag CASCADE").executeUpdate();
+		em.createNativeQuery("TRUNCATE region CASCADE").executeUpdate();
 		em.getTransaction().commit();
 	}
 }

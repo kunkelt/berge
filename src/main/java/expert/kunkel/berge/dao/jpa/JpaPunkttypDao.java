@@ -2,21 +2,29 @@ package expert.kunkel.berge.dao.jpa;
 
 import java.util.List;
 
-import expert.kunkel.berge.dao.Punkttyp;
-import expert.kunkel.berge.dao.PunkttypDAO;
+import javax.persistence.EntityManager;
 
-public class JpaPunkttypDao implements PunkttypDAO {
+import expert.kunkel.berge.model.Punkttyp;
 
-	@Override
-	public List<Punkttyp> selectPunkttyp() {
-		// TODO Auto-generated method stub
-		return null;
+public class JpaPunkttypDao {
+
+	public Punkttyp insertPunkttyp(Punkttyp punkttyp) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Punkttyp pt = em.merge(punkttyp);
+		em.getTransaction().commit();
+		return pt;
 	}
 
-	@Override
-	public Punkttyp selectPunkttyp(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Punkttyp> selectPunkttyp() {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.createQuery("SELECT pt FROM Punkttyp pt", Punkttyp.class)
+				.getResultList();
+	}
+
+	public Punkttyp findById(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Punkttyp.class, id);
 	}
 
 }

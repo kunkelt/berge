@@ -2,6 +2,7 @@ package expert.kunkel.berge.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -25,6 +26,10 @@ public class Verlag implements Serializable {
 	private String name;
 
 	private String telefon;
+
+	//bi-directional many-to-one association to Karte
+	@OneToMany(mappedBy="verlag")
+	private List<Karte> karten;
 
 	public Verlag() {
 	}
@@ -67,6 +72,28 @@ public class Verlag implements Serializable {
 
 	public void setTelefon(String telefon) {
 		this.telefon = telefon;
+	}
+
+	public List<Karte> getKarten() {
+		return this.karten;
+	}
+
+	public void setKarten(List<Karte> karten) {
+		this.karten = karten;
+	}
+
+	public Karte addKarten(Karte karten) {
+		getKarten().add(karten);
+		karten.setVerlag(this);
+
+		return karten;
+	}
+
+	public Karte removeKarten(Karte karten) {
+		getKarten().remove(karten);
+		karten.setVerlag(null);
+
+		return karten;
 	}
 
 }

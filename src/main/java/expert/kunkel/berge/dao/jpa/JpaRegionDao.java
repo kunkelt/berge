@@ -1,60 +1,61 @@
 package expert.kunkel.berge.dao.jpa;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import expert.kunkel.berge.dao.Region;
-import expert.kunkel.berge.dao.RegionDAO;
+import javax.persistence.EntityManager;
 
-public class JpaRegionDao implements RegionDAO {
+import expert.kunkel.berge.model.Region;
 
-	@Override
-	public int insertRegion(Region region) {
-		// TODO Auto-generated method stub
-		return 0;
+public class JpaRegionDao {
+
+	public Region insertRegion(Region region) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Region r = em.merge(region);
+		em.getTransaction().commit();
+		return r;
 	}
 
-	@Override
-	public boolean deleteRegion(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public Region updateRegion(Region region) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Region r = em.merge(region);
+		em.getTransaction().commit();
+		return r;
 	}
 
-	@Override
-	public Region findRegion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean updateRegion(Region region) throws SQLException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public List<Region> selectRegion() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.createQuery("SELECT r FROM Region r", Region.class)
+				.getResultList();
 	}
 
-	@Override
-	public List<Region> selectRegion(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Region findById(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Region.class, id);
 	}
 
-	@Override
-	public Region getOberregion(Region region) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Region> findUsedRegions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		List<Region> list = new ArrayList<Region>();
 
+		StringBuffer sb = new StringBuffer(
+				"select DISTINCT region.id, region.name from region "
+						+ ", tour, tourentag ");
+		sb.append(" where tourentag.region = region.id AND ");
+		sb.append(" tourentag.id_tour = tour.id ");
+		sb.append(" ORDER BY ");
+		sb.append(" region.name");
+
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		@SuppressWarnings("unchecked")
+		List<Object[]> result = em.createNativeQuery(sb.toString())
+		.getResultList();
+
+		for (Object[] o : result) {
+			list.add(findById((Integer) o[0]));
+		}
+
+		return list;
+	}
 }

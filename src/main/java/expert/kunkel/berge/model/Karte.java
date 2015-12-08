@@ -31,15 +31,21 @@ public class Karte implements Serializable {
 
 	private String isbn;
 
-	private Integer kartentyp;
-
 	private String massstab;
 
 	private String titel;
 
 	private String untertitel;
 
-	private Integer verlag;
+	//bi-directional many-to-one association to Kartentyp
+	@ManyToOne
+	@JoinColumn(name="kartentyp")
+	private Kartentyp kartentyp;
+
+	//bi-directional many-to-one association to Verlag
+	@ManyToOne
+	@JoinColumn(name="verlag")
+	private Verlag verlag;
 
 	//bi-directional many-to-many association to Tour
 	@ManyToMany(mappedBy="karten")
@@ -88,14 +94,6 @@ public class Karte implements Serializable {
 		this.isbn = isbn;
 	}
 
-	public Integer getKartentyp() {
-		return this.kartentyp;
-	}
-
-	public void setKartentyp(Integer kartentyp) {
-		this.kartentyp = kartentyp;
-	}
-
 	public String getMassstab() {
 		return this.massstab;
 	}
@@ -120,11 +118,19 @@ public class Karte implements Serializable {
 		this.untertitel = untertitel;
 	}
 
-	public Integer getVerlag() {
+	public Kartentyp getKartentyp() {
+		return this.kartentyp;
+	}
+
+	public void setKartentyp(Kartentyp kartentyp) {
+		this.kartentyp = kartentyp;
+	}
+
+	public Verlag getVerlag() {
 		return this.verlag;
 	}
 
-	public void setVerlag(Integer verlag) {
+	public void setVerlag(Verlag verlag) {
 		this.verlag = verlag;
 	}
 
