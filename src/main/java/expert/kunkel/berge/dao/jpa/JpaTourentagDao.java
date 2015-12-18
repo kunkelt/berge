@@ -3,6 +3,7 @@ package expert.kunkel.berge.dao.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import expert.kunkel.berge.model.Tour;
 import expert.kunkel.berge.model.Tourentag;
@@ -24,19 +25,25 @@ public class JpaTourentagDao {
 		em.getTransaction().commit();
 	}
 
-	public Tourentag findTourentag() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean updateTourentag(Tourentag tag) {
-		// TODO Auto-generated method stub
-		return false;
+	public void updateTourentag(Tourentag tag) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		em.merge(tag);
+		em.getTransaction().commit();
 	}
 
 	public List<Tourentag> findForTour(Tour tour) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		TypedQuery<Tourentag> query = em.createQuery(
+				"SELECT tt FROM Tourentag tt WHERE tt.tour = :tour",
+				Tourentag.class);
+		query.setParameter("tour", tour);
+		return query.getResultList();
+	}
+
+	public Tourentag findForId(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Tourentag.class, id);
 	}
 
 }

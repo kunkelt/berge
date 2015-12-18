@@ -4,9 +4,6 @@ package expert.kunkel.berge.dao.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
-import expert.kunkel.berge.dao.PunktDAO;
-import expert.kunkel.berge.dao.TourabschnittDAO;
-
 public class JpaDaoFactory {
 	private EntityManager em = getEntityManager();
 
@@ -38,7 +35,7 @@ public class JpaDaoFactory {
 		return new JpaRegionDao();
 	}
 
-	public PunktDAO getPunktDAO() {
+	public JpaPunktDao getPunktDAO() {
 		return new JpaPunktDao();
 	}
 
@@ -50,7 +47,7 @@ public class JpaDaoFactory {
 		return new JpaTourDao();
 	}
 
-	public TourabschnittDAO getTourabschnittDAO() {
+	public JpaTourabschnittDao getTourabschnittDAO() {
 		return new JpaTourabschnittDao();
 	}
 
@@ -64,5 +61,9 @@ public class JpaDaoFactory {
 
 	public JpaGaleriebildDao getGaleriebildDAO() {
 		return new JpaGaleriebildDao();
+	}
+
+	public JpaKartentypDao getKartentypDao() {
+		return new JpaKartentypDao();
 	}
 }

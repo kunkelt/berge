@@ -18,10 +18,15 @@ jar {
 repositories {
 	mavenLocal()
 	maven {
-		url "https://repository.jboss.org/nexus/content/groups/public-jboss/"
 		url "http://download.osgeo.org/webdav/geotools/"
 	}
+	maven {
+		url "http://www.hibernatespatial.org/repository"
+	}
 	mavenCentral()
+	maven {
+		url "https://repository.jboss.org/nexus/content/groups/public-jboss/"
+	}
 	flatDir {
 		dirs 'libs'
 	}
@@ -32,7 +37,8 @@ dependencies {
 	compile name: 'org.boehn.kmlframework_20090718'
 	compile 'org.swinglabs:swingx-core:1.6.2-2'
 	compile 'se.kodapan.osm.common:tools:0.0.3-SNAPSHOT'
-	compile 'org.eclipse.persistence:eclipselink:2.5.2'
+	compile 'org.hibernate:hibernate-spatial:4.3'
+	compile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
 	
 	testCompile 'junit:junit:4.12'
 	

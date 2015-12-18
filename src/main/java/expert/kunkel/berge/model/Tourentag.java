@@ -1,24 +1,37 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
-import org.postgresql.geometric.PGpolygon;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * The persistent class for the tourentag database table.
  * 
  */
 @Entity
-@NamedQuery(name="Tourentag.findAll", query="SELECT t FROM Tourentag t")
+@NamedQuery(name = "Tourentag.findAll", query = "SELECT t FROM Tourentag t")
 public class Tourentag implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TOURENTAG_ID_GENERATOR", sequenceName="ID_TOURENTAG", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TOURENTAG_ID_GENERATOR")
+	@SequenceGenerator(name = "TOURENTAG_ID_GENERATOR", sequenceName = "ID_TOURENTAG", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TOURENTAG_ID_GENERATOR")
 	private Integer id;
 
 	private String beschreibung;
@@ -40,27 +53,28 @@ public class Tourentag implements Serializable {
 
 	private Integer tag;
 
-	private PGpolygon track;
+	@Type(type = "org.hibernate.spatial.GeometryType")
+	private Polygon track;
 
-	//bi-directional many-to-one association to Tourabschnitt
-	@OneToMany(mappedBy="tourentag")
+	// bi-directional many-to-one association to Tourabschnitt
+	@OneToMany(mappedBy = "tourentag")
 	private List<Tourabschnitt> tourabschnitte;
 
-	//bi-directional many-to-one association to Region
+	// bi-directional many-to-one association to Region
 	@ManyToOne
-	@JoinColumn(name="region")
+	@JoinColumn(name = "region")
 	private Region region;
 
-	//bi-directional many-to-one association to Tour
+	// bi-directional many-to-one association to Tour
 	@ManyToOne
-	@JoinColumn(name="id_tour")
+	@JoinColumn(name = "id_tour")
 	private Tour tour;
 
 	public Tourentag() {
 	}
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Integer id) {
@@ -68,7 +82,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public String getBeschreibung() {
-		return this.beschreibung;
+		return beschreibung;
 	}
 
 	public void setBeschreibung(String beschreibung) {
@@ -76,7 +90,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public String getBilddatei() {
-		return this.bilddatei;
+		return bilddatei;
 	}
 
 	public void setBilddatei(String bilddatei) {
@@ -84,7 +98,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public String getBildtitel() {
-		return this.bildtitel;
+		return bildtitel;
 	}
 
 	public void setBildtitel(String bildtitel) {
@@ -92,7 +106,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public Date getDatum() {
-		return this.datum;
+		return datum;
 	}
 
 	public void setDatum(Date datum) {
@@ -100,7 +114,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public Double getGehzeit() {
-		return this.gehzeit;
+		return gehzeit;
 	}
 
 	public void setGehzeit(Double gehzeit) {
@@ -108,7 +122,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public Integer getHmabstieg() {
-		return this.hmabstieg;
+		return hmabstieg;
 	}
 
 	public void setHmabstieg(Integer hmabstieg) {
@@ -116,7 +130,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public Integer getHmaufstieg() {
-		return this.hmaufstieg;
+		return hmaufstieg;
 	}
 
 	public void setHmaufstieg(Integer hmaufstieg) {
@@ -124,7 +138,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public String getSchwierigkt() {
-		return this.schwierigkt;
+		return schwierigkt;
 	}
 
 	public void setSchwierigkt(String schwierigkt) {
@@ -132,23 +146,23 @@ public class Tourentag implements Serializable {
 	}
 
 	public Integer getTag() {
-		return this.tag;
+		return tag;
 	}
 
 	public void setTag(Integer tag) {
 		this.tag = tag;
 	}
 
-	public PGpolygon getTrack() {
-		return this.track;
+	public Polygon getTrack() {
+		return track;
 	}
 
-	public void setTrack(PGpolygon track) {
+	public void setTrack(Polygon track) {
 		this.track = track;
 	}
 
 	public List<Tourabschnitt> getTourabschnitte() {
-		return this.tourabschnitte;
+		return tourabschnitte;
 	}
 
 	public void setTourabschnitte(List<Tourabschnitt> tourabschnitte) {
@@ -170,7 +184,7 @@ public class Tourentag implements Serializable {
 	}
 
 	public Region getRegion() {
-		return this.region;
+		return region;
 	}
 
 	public void setRegion(Region region) {
@@ -178,7 +192,140 @@ public class Tourentag implements Serializable {
 	}
 
 	public Tour getTour() {
-		return this.tour;
+		return tour;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((beschreibung == null) ? 0 : beschreibung.hashCode());
+		result = prime * result
+				+ ((bilddatei == null) ? 0 : bilddatei.hashCode());
+		result = prime * result
+				+ ((bildtitel == null) ? 0 : bildtitel.hashCode());
+		result = prime * result + ((datum == null) ? 0 : datum.hashCode());
+		result = prime * result + ((gehzeit == null) ? 0 : gehzeit.hashCode());
+		result = prime * result
+				+ ((hmabstieg == null) ? 0 : hmabstieg.hashCode());
+		result = prime * result
+				+ ((hmaufstieg == null) ? 0 : hmaufstieg.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((region == null) ? 0 : region.hashCode());
+		result = prime * result
+				+ ((schwierigkt == null) ? 0 : schwierigkt.hashCode());
+		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
+		result = prime * result
+				+ ((tourabschnitte == null) ? 0 : tourabschnitte.hashCode());
+		result = prime * result + ((track == null) ? 0 : track.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Tourentag other = (Tourentag) obj;
+		if (beschreibung == null) {
+			if (other.beschreibung != null) {
+				return false;
+			}
+		} else if (!beschreibung.equals(other.beschreibung)) {
+			return false;
+		}
+		if (bilddatei == null) {
+			if (other.bilddatei != null) {
+				return false;
+			}
+		} else if (!bilddatei.equals(other.bilddatei)) {
+			return false;
+		}
+		if (bildtitel == null) {
+			if (other.bildtitel != null) {
+				return false;
+			}
+		} else if (!bildtitel.equals(other.bildtitel)) {
+			return false;
+		}
+		if (datum == null) {
+			if (other.datum != null) {
+				return false;
+			}
+		} else if (!datum.equals(other.datum)) {
+			return false;
+		}
+		if (gehzeit == null) {
+			if (other.gehzeit != null) {
+				return false;
+			}
+		} else if (!gehzeit.equals(other.gehzeit)) {
+			return false;
+		}
+		if (hmabstieg == null) {
+			if (other.hmabstieg != null) {
+				return false;
+			}
+		} else if (!hmabstieg.equals(other.hmabstieg)) {
+			return false;
+		}
+		if (hmaufstieg == null) {
+			if (other.hmaufstieg != null) {
+				return false;
+			}
+		} else if (!hmaufstieg.equals(other.hmaufstieg)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (region == null) {
+			if (other.region != null) {
+				return false;
+			}
+		} else if (!region.equals(other.region)) {
+			return false;
+		}
+		if (schwierigkt == null) {
+			if (other.schwierigkt != null) {
+				return false;
+			}
+		} else if (!schwierigkt.equals(other.schwierigkt)) {
+			return false;
+		}
+		if (tag == null) {
+			if (other.tag != null) {
+				return false;
+			}
+		} else if (!tag.equals(other.tag)) {
+			return false;
+		}
+		if (tourabschnitte == null) {
+			if (other.tourabschnitte != null) {
+				return false;
+			}
+		} else if (!tourabschnitte.equals(other.tourabschnitte)) {
+			return false;
+		}
+		if (track == null) {
+			if (other.track != null) {
+				return false;
+			}
+		} else if (!track.equals(other.track)) {
+			return false;
+		}
+		return true;
 	}
 
 	public void setTour(Tour tour) {

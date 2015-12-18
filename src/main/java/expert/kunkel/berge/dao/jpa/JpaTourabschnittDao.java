@@ -1,46 +1,49 @@
 package expert.kunkel.berge.dao.jpa;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import expert.kunkel.berge.dao.Tourabschnitt;
-import expert.kunkel.berge.dao.TourabschnittDAO;
-import expert.kunkel.berge.dao.Tourentag;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
-public class JpaTourabschnittDao implements TourabschnittDAO {
+import expert.kunkel.berge.model.Tourabschnitt;
+import expert.kunkel.berge.model.Tourentag;
 
-	@Override
-	public int insertTourabschnitt(Tourabschnitt abschnitt)
-			throws SQLException, ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return 0;
+public class JpaTourabschnittDao {
+
+	public Tourabschnitt insertTourabschnitt(Tourabschnitt abschnitt) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Tourabschnitt a = em.merge(abschnitt);
+		em.getTransaction().commit();
+		return a;
 	}
 
-	@Override
-	public boolean deleteTourabschnitt(Tourentag ttag) throws SQLException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteTourabschnitt(Tourabschnitt ttag) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		em.remove(ttag);
+		em.getTransaction().commit();
 	}
 
-	@Override
-	public Tourabschnitt findTourabschnitt() {
-		// TODO Auto-generated method stub
-		return null;
+	public Tourabschnitt findById(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Tourabschnitt.class, id);
 	}
 
-	@Override
-	public boolean updateTourabschnitt(Tourabschnitt abschnitt)
-			throws SQLException, ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
+	public void updateTourabschnitt(Tourabschnitt abschnitt) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		em.merge(abschnitt);
+		em.getTransaction().commit();
 	}
 
-	@Override
-	public List<Tourabschnitt> selectTourabschnitt(Tourentag ttag)
-			throws SQLException, ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Tourabschnitt> selectTourabschnitt(Tourentag ttag) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		TypedQuery<Tourabschnitt> query = em.createQuery(
+				"SELECT ta FROM Tourabschnitt ta WHERE ta.tourentag = :ttag",
+				Tourabschnitt.class);
+		query.setParameter("ttag", ttag);
+		return query.getResultList();
 	}
 
 }

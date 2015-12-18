@@ -26,6 +26,7 @@ public class JpaTourDaoTest {
 
 	private static Tour tour1;
 	private static Tour tour2;
+	private static Region region;
 
 	private static final Boolean geplant = Boolean.TRUE;
 	private static final String link = "http://www.example.com";
@@ -49,8 +50,6 @@ public class JpaTourDaoTest {
 		tour2.setName("Name 2");
 		tour2.setZusatzinfo(zusatzinfo);
 	}
-
-	private Region region;
 
 	@Test
 	public void test1_Insert() {

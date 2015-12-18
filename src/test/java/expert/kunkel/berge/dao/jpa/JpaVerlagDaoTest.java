@@ -3,6 +3,7 @@ package expert.kunkel.berge.dao.jpa;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -47,7 +48,7 @@ public class JpaVerlagDaoTest {
 		assertEquals(verlag2, listVerlage.get(0));
 
 		assertEquals(
-				1l,
+				BigInteger.ONE,
 				em.createNativeQuery(
 						"SELECT COUNT(*) FROM verlag WHERE id = "
 								+ verlag2.getId()).getSingleResult());

@@ -26,6 +26,9 @@ public class JpaKarteDaoTest {
 	public void testSelectKarte() {
 		Kartentyp kartentyp = new Kartentyp();
 		kartentyp.setTyp("Analog");
+		kartentyp = JpaDaoFactory.getInstance().getKartentypDao()
+				.insertKartentyp(kartentyp);
+
 		Karte karte = new Karte();
 		karte.setAusgabejahr(2015);
 		karte.setBlattnummer("50/2");
@@ -57,6 +60,7 @@ public class JpaKarteDaoTest {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE karte CASCADE").executeUpdate();
+		em.createNativeQuery("TRUNCATE kartentyp CASCADE").executeUpdate();
 		em.getTransaction().commit();
 	}
 }

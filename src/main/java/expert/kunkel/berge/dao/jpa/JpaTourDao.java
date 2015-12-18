@@ -34,10 +34,7 @@ public class JpaTourDao {
 
 	public Tour findById(Integer id) {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
-		String select = "SELECT t FROM Tour t WHERE t.id = :id";
-		TypedQuery<Tour> query = em.createQuery(select, Tour.class);
-		query.setParameter("id", id);
-		return query.getSingleResult();
+		return em.find(Tour.class, id);
 	}
 
 	public List<Tour> selectTour(Boolean geplant) {
@@ -61,8 +58,8 @@ public class JpaTourDao {
 	 */
 	public List<Tour> getAllToursForYear(int jahr) {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
-		String select = "SELECT t FROM Tour t LEFT JOIN t.tourentage tt "
-				+ " WHERE operator('date_part', 'year', tt.datum)  = :jahr";
+		String select = "SELECT DISTINCT t FROM Tour t LEFT JOIN t.tourentage tt "
+				+ " WHERE date_part('year', tt.datum)  = :jahr";
 		TypedQuery<Tour> query = em.createQuery(select, Tour.class);
 		query.setParameter("jahr", jahr);
 		return query.getResultList();
@@ -70,10 +67,10 @@ public class JpaTourDao {
 
 	public List<Tour> findTourInRegion(Region region) {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
-		String select = "SELECT t FROM Tour t LEFT JOIN t.tourentage tt "
-				+ "WHERE tt.region.id = :regionId";
+		String select = "SELECT DISTINCT t FROM Tour t LEFT JOIN t.tourentage tt "
+				+ "WHERE tt.region = :region";
 		TypedQuery<Tour> query = em.createQuery(select, Tour.class);
-		query.setParameter("regionId", region.getId());
+		query.setParameter("region", region);
 		return query.getResultList();
 	}
 

@@ -1,22 +1,32 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 /**
  * The persistent class for the tour database table.
  * 
  */
 @Entity
-@NamedQuery(name="Tour.findAll", query="SELECT t FROM Tour t")
+@NamedQuery(name = "Tour.findAll", query = "SELECT t FROM Tour t")
 public class Tour implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TOUR_ID_GENERATOR", sequenceName="ID_TOUR", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TOUR_ID_GENERATOR")
+	@SequenceGenerator(name = "TOUR_ID_GENERATOR", sequenceName = "ID_TOUR", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TOUR_ID_GENERATOR")
 	private Integer id;
 
 	private String beschreibung;
@@ -29,32 +39,24 @@ public class Tour implements Serializable {
 
 	private String zusatzinfo;
 
-	//bi-directional many-to-one association to Galeriebild
-	@OneToMany(mappedBy="tour")
+	// bi-directional many-to-one association to Galeriebild
+	@OneToMany(mappedBy = "tour")
 	private List<Galeriebild> galeriebilder;
 
-	//bi-directional many-to-many association to Karte
+	// bi-directional many-to-many association to Karte
 	@ManyToMany
-	@JoinTable(
-		name="tour_karte"
-		, joinColumns={
-			@JoinColumn(name="id_tour")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="id_karte")
-			}
-		)
+	@JoinTable(name = "tour_karte", joinColumns = { @JoinColumn(name = "id_tour") }, inverseJoinColumns = { @JoinColumn(name = "id_karte") })
 	private List<Karte> karten;
 
-	//bi-directional many-to-one association to Tourentag
-	@OneToMany(mappedBy="tour")
-	private List<Tourentag> tourentage;
+	// bi-directional many-to-one association to Tourentag
+	@OneToMany(mappedBy = "tour")
+	private List<Tourentag> tourentage = new ArrayList<Tourentag>();
 
 	public Tour() {
 	}
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Integer id) {
@@ -62,7 +64,7 @@ public class Tour implements Serializable {
 	}
 
 	public String getBeschreibung() {
-		return this.beschreibung;
+		return beschreibung;
 	}
 
 	public void setBeschreibung(String beschreibung) {
@@ -70,7 +72,7 @@ public class Tour implements Serializable {
 	}
 
 	public Boolean getGeplant() {
-		return this.geplant;
+		return geplant;
 	}
 
 	public void setGeplant(Boolean geplant) {
@@ -78,7 +80,7 @@ public class Tour implements Serializable {
 	}
 
 	public String getLink() {
-		return this.link;
+		return link;
 	}
 
 	public void setLink(String link) {
@@ -86,7 +88,7 @@ public class Tour implements Serializable {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setName(String name) {
@@ -94,7 +96,7 @@ public class Tour implements Serializable {
 	}
 
 	public String getZusatzinfo() {
-		return this.zusatzinfo;
+		return zusatzinfo;
 	}
 
 	public void setZusatzinfo(String zusatzinfo) {
@@ -102,7 +104,7 @@ public class Tour implements Serializable {
 	}
 
 	public List<Galeriebild> getGaleriebilder() {
-		return this.galeriebilder;
+		return galeriebilder;
 	}
 
 	public void setGaleriebilder(List<Galeriebild> galeriebilder) {
@@ -124,7 +126,7 @@ public class Tour implements Serializable {
 	}
 
 	public List<Karte> getKarten() {
-		return this.karten;
+		return karten;
 	}
 
 	public void setKarten(List<Karte> karten) {
@@ -132,7 +134,7 @@ public class Tour implements Serializable {
 	}
 
 	public List<Tourentag> getTourentage() {
-		return this.tourentage;
+		return tourentage;
 	}
 
 	public void setTourentage(List<Tourentag> tourentage) {
