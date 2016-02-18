@@ -22,7 +22,7 @@ public class JpaPunkttypDaoTest {
 	}
 
 	@Test
-	public void testSelectPunkttyp() {
+	public void test() {
 		Punkttyp punkttyp = new Punkttyp();
 		punkttyp.setName("Name 1");
 
@@ -35,17 +35,17 @@ public class JpaPunkttypDaoTest {
 		punkttyp4.setName("Name 2");
 		punkttyp4 = dao.insertPunkttyp(punkttyp4);
 
-		List<Punkttyp> listVerlage = dao.selectPunkttyp();
-		assertEquals(2, listVerlage.size());
-		assertEquals(punkttyp2, listVerlage.get(0));
-		assertEquals(punkttyp4, listVerlage.get(1));
+		List<Punkttyp> listPunkttyp = dao.selectPunkttyp();
+		assertEquals(2, listPunkttyp.size());
+		assertEquals(punkttyp2, listPunkttyp.get(0));
+		assertEquals(punkttyp4, listPunkttyp.get(1));
 	}
 
 	@AfterClass
 	public static void tearDown() {
 		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
-		em.createNativeQuery("TRUNCATE punkttyp").executeUpdate();
+		em.createNativeQuery("TRUNCATE punkttyp CASCADE").executeUpdate();
 		em.getTransaction().commit();
 	}
 }

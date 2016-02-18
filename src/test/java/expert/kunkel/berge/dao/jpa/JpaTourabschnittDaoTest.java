@@ -5,7 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -67,5 +70,16 @@ public class JpaTourabschnittDaoTest {
 		dao.deleteTourabschnitt(ta2);
 
 		assertEquals(0, dao.selectTourabschnitt(tt1).size());
+	}
+
+	@AfterClass
+	public static void tearDown() {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		em.createNativeQuery("TRUNCATE tour CASCADE").executeUpdate();
+		em.createNativeQuery("TRUNCATE tourentag CASCADE").executeUpdate();
+		em.createNativeQuery("TRUNCATE tourabschnitt CASCADE").executeUpdate();
+		em.createNativeQuery("TRUNCATE region CASCADE").executeUpdate();
+		em.getTransaction().commit();
 	}
 }

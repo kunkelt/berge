@@ -155,4 +155,76 @@ public class Tour implements Serializable {
 		return tourentage;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((beschreibung == null) ? 0 : beschreibung.hashCode());
+		result = prime * result + ((geplant == null) ? 0 : geplant.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((link == null) ? 0 : link.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((zusatzinfo == null) ? 0 : zusatzinfo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Tour other = (Tour) obj;
+		if (beschreibung == null) {
+			if (other.beschreibung != null) {
+				return false;
+			}
+		} else if (!beschreibung.equals(other.beschreibung)) {
+			return false;
+		}
+		if (geplant == null) {
+			if (other.geplant != null) {
+				return false;
+			}
+		} else if (!geplant.equals(other.geplant)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (link == null) {
+			if (other.link != null) {
+				return false;
+			}
+		} else if (!link.equals(other.link)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (zusatzinfo == null) {
+			if (other.zusatzinfo != null) {
+				return false;
+			}
+		} else if (!zusatzinfo.equals(other.zusatzinfo)) {
+			return false;
+		}
+		return true;
+	}
+
 }

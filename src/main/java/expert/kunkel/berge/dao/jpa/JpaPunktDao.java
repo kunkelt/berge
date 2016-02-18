@@ -1,42 +1,45 @@
 package expert.kunkel.berge.dao.jpa;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import expert.kunkel.berge.dao.Punkt;
+import javax.persistence.EntityManager;
+
+import expert.kunkel.berge.model.Punkt;
 
 public class JpaPunktDao {
 
-	public int insertPunkt(Punkt punkt) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Punkt insertPunkt(Punkt punkt) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Punkt p = em.merge(punkt);
+		em.getTransaction().commit();
+		return p;
 	}
 
-	public boolean deletePunkt(int id) throws SQLException,
-	ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
+	public void deletePunkt(Punkt p) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		em.remove(p);
+		em.getTransaction().commit();
 	}
 
-	public Punkt findPunkt() {
-		// TODO Auto-generated method stub
-		return null;
+	public Punkt findById(Integer id) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.find(Punkt.class, id);
 	}
 
-	public boolean updatePunkt(Punkt punkt) throws SQLException,
-	ClassNotFoundException {
-		// TODO Auto-generated method stub
-		return false;
+	public Punkt updatePunkt(Punkt punkt) {
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Punkt p = em.merge(punkt);
+		em.getTransaction().commit();
+		return p;
 	}
 
 	public List<Punkt> selectPunkt() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Punkt> selectPunkt(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		return em.createQuery("SELECT p FROM Punkt p", Punkt.class)
+				.getResultList();
 	}
 
 }
