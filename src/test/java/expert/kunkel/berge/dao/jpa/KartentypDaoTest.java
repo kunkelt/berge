@@ -12,13 +12,13 @@ import org.junit.Test;
 
 import expert.kunkel.berge.model.Kartentyp;
 
-public class JpaKartentypDaoTest {
+public class KartentypDaoTest {
 
-	private static JpaKartentypDao dao;
+	private static KartentypDao dao;
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getKartentypDao();
+		dao = DaoFactory.getInstance().getKartentypDao();
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class JpaKartentypDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE kartentyp CASCADE").executeUpdate();
 		em.getTransaction().commit();

@@ -12,13 +12,13 @@ import org.junit.Test;
 
 import expert.kunkel.berge.model.Punkttyp;
 
-public class JpaPunkttypDaoTest {
+public class PunkttypDaoTest {
 
-	private static JpaPunkttypDao dao;
+	private static PunkttypDao dao;
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getPunkttypDAO();
+		dao = DaoFactory.getInstance().getPunkttypDAO();
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class JpaPunkttypDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE punkttyp CASCADE").executeUpdate();
 		em.getTransaction().commit();

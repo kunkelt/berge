@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 
 import expert.kunkel.berge.model.Region;
 
-public class JpaRegionDao {
+public class RegionDao {
 
 	public Region insertRegion(Region region) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Region r = em.merge(region);
 		em.getTransaction().commit();
@@ -18,7 +18,7 @@ public class JpaRegionDao {
 	}
 
 	public Region updateRegion(Region region) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Region r = em.merge(region);
 		em.getTransaction().commit();
@@ -26,13 +26,13 @@ public class JpaRegionDao {
 	}
 
 	public List<Region> selectRegion() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.createQuery("SELECT r FROM Region r", Region.class)
 				.getResultList();
 	}
 
 	public Region findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Region.class, id);
 	}
 
@@ -47,7 +47,7 @@ public class JpaRegionDao {
 		sb.append(" ORDER BY ");
 		sb.append(" region.name");
 
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		@SuppressWarnings("unchecked")
 		List<Object[]> result = em.createNativeQuery(sb.toString())
 		.getResultList();

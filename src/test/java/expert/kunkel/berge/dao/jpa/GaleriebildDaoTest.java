@@ -13,10 +13,10 @@ import org.junit.Test;
 import expert.kunkel.berge.model.Galeriebild;
 import expert.kunkel.berge.model.Tour;
 
-public class JpaGaleriebildDaoTest {
+public class GaleriebildDaoTest {
 
-	private static JpaGaleriebildDao dao;
-	private static JpaTourDao daoTour;
+	private static GaleriebildDao dao;
+	private static TourDao daoTour;
 
 	private static final int sequenz = 1;
 	private static final int breite = 600;
@@ -26,8 +26,8 @@ public class JpaGaleriebildDaoTest {
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getGaleriebildDAO();
-		daoTour = JpaDaoFactory.getInstance().getTourDAO();
+		dao = DaoFactory.getInstance().getGaleriebildDAO();
+		daoTour = DaoFactory.getInstance().getTourDAO();
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class JpaGaleriebildDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE galeriebild CASCADE").executeUpdate();
 		em.createNativeQuery("TRUNCATE tour CASCADE").executeUpdate();

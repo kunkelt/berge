@@ -8,10 +8,10 @@ import javax.persistence.TypedQuery;
 import expert.kunkel.berge.model.Region;
 import expert.kunkel.berge.model.Tour;
 
-public class JpaTourDao {
+public class TourDao {
 
 	public Tour insertTour(Tour tour) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Tour tour2 = em.merge(tour);
 		em.getTransaction().commit();
@@ -19,26 +19,26 @@ public class JpaTourDao {
 	}
 
 	public void deleteTour(Tour tour) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.remove(tour);
 		em.getTransaction().commit();
 	}
 
 	public void updateTour(Tour tour) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.merge(tour);
 		em.getTransaction().commit();
 	}
 
 	public Tour findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Tour.class, id);
 	}
 
 	public List<Tour> selectTour(Boolean geplant) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		String select = "SELECT t FROM Tour t";
 		if (geplant != null) {
 			select += " WHERE t.geplant = :geplant";
@@ -57,7 +57,7 @@ public class JpaTourDao {
 	 * @return alle Touren für ein Kalenderjahr (ohne geplante)
 	 */
 	public List<Tour> getAllToursForYear(int jahr) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		String select = "SELECT DISTINCT t FROM Tour t LEFT JOIN t.tourentage tt "
 				+ " WHERE date_part('year', tt.datum)  = :jahr";
 		TypedQuery<Tour> query = em.createQuery(select, Tour.class);
@@ -66,7 +66,7 @@ public class JpaTourDao {
 	}
 
 	public List<Tour> findTourInRegion(Region region) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		String select = "SELECT DISTINCT t FROM Tour t LEFT JOIN t.tourentage tt "
 				+ "WHERE tt.region = :region";
 		TypedQuery<Tour> query = em.createQuery(select, Tour.class);

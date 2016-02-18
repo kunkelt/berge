@@ -20,9 +20,9 @@ import expert.kunkel.berge.model.Tour;
 import expert.kunkel.berge.model.Tourentag;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class JpaTourDaoTest {
+public class TourDaoTest {
 
-	private static JpaTourDao dao;
+	private static TourDao dao;
 
 	private static Tour tour1;
 	private static Tour tour2;
@@ -34,7 +34,7 @@ public class JpaTourDaoTest {
 
 	@BeforeClass
 	public static void setUp() throws ParseException {
-		dao = JpaDaoFactory.getInstance().getTourDAO();
+		dao = DaoFactory.getInstance().getTourDAO();
 
 		tour1 = new Tour();
 		tour1.setBeschreibung("Geplant");
@@ -82,7 +82,7 @@ public class JpaTourDaoTest {
 	public void test4_TourInA_Year() throws ParseException {
 		region = new Region();
 		region.setName("Allgäu");
-		region = JpaDaoFactory.getInstance().getRegionDAO()
+		region = DaoFactory.getInstance().getRegionDAO()
 				.insertRegion(region);
 
 		Tourentag tt1 = new Tourentag();
@@ -90,7 +90,7 @@ public class JpaTourDaoTest {
 		tt1.setTour(tour1);
 		tt1.setTag(1);
 		tt1.setRegion(region);
-		tt1 = JpaDaoFactory.getInstance().getTourentagDAO()
+		tt1 = DaoFactory.getInstance().getTourentagDAO()
 				.insertTourentag(tt1);
 
 		Tourentag tt2 = new Tourentag();
@@ -98,7 +98,7 @@ public class JpaTourDaoTest {
 		tt2.setTour(tour1);
 		tt2.setTag(2);
 		tt2.setRegion(region);
-		tt2 = JpaDaoFactory.getInstance().getTourentagDAO()
+		tt2 = DaoFactory.getInstance().getTourentagDAO()
 				.insertTourentag(tt2);
 
 		tour1.addTourentage(tt1);
@@ -114,7 +114,7 @@ public class JpaTourDaoTest {
 
 	@Test
 	public void test5_FindUsedRegions() {
-		assertEquals(1, JpaDaoFactory.getInstance().getRegionDAO()
+		assertEquals(1, DaoFactory.getInstance().getRegionDAO()
 				.findUsedRegions().size());
 	}
 
@@ -128,7 +128,7 @@ public class JpaTourDaoTest {
 	@Test
 	public void test9_Delete() {
 		for (Tourentag tt : tour1.getTourentage()) {
-			JpaDaoFactory.getInstance().getTourentagDAO().deleteTourentag(tt);
+			DaoFactory.getInstance().getTourentagDAO().deleteTourentag(tt);
 		}
 
 		dao.deleteTour(tour1);
@@ -140,7 +140,7 @@ public class JpaTourDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE tour CASCADE").executeUpdate();
 		em.createNativeQuery("TRUNCATE tourentag CASCADE").executeUpdate();

@@ -8,10 +8,10 @@ import javax.persistence.TypedQuery;
 import expert.kunkel.berge.model.Tourabschnitt;
 import expert.kunkel.berge.model.Tourentag;
 
-public class JpaTourabschnittDao {
+public class TourabschnittDao {
 
 	public Tourabschnitt insertTourabschnitt(Tourabschnitt abschnitt) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Tourabschnitt a = em.merge(abschnitt);
 		em.getTransaction().commit();
@@ -19,26 +19,26 @@ public class JpaTourabschnittDao {
 	}
 
 	public void deleteTourabschnitt(Tourabschnitt ttag) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.remove(ttag);
 		em.getTransaction().commit();
 	}
 
 	public Tourabschnitt findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Tourabschnitt.class, id);
 	}
 
 	public void updateTourabschnitt(Tourabschnitt abschnitt) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.merge(abschnitt);
 		em.getTransaction().commit();
 	}
 
 	public List<Tourabschnitt> selectTourabschnitt(Tourentag ttag) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		TypedQuery<Tourabschnitt> query = em.createQuery(
 				"SELECT ta FROM Tourabschnitt ta WHERE ta.tourentag = :ttag",
 				Tourabschnitt.class);

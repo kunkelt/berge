@@ -17,13 +17,13 @@ import com.vividsolutions.jts.geom.Point;
 import expert.kunkel.berge.model.Punkt;
 import expert.kunkel.berge.model.Punkttyp;
 
-public class JpaPunktDaoTest {
+public class PunktDaoTest {
 
-	private static JpaPunktDao dao;
+	private static PunktDao dao;
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getPunktDAO();
+		dao = DaoFactory.getInstance().getPunktDAO();
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class JpaPunktDaoTest {
 		Punkttyp punkttyp = new Punkttyp();
 		punkttyp.setName("Name 1");
 
-		punkttyp = JpaDaoFactory.getInstance().getPunkttypDAO()
+		punkttyp = DaoFactory.getInstance().getPunkttypDAO()
 				.insertPunkttyp(punkttyp);
 
 		GeometryFactory fact = new GeometryFactory();
@@ -64,7 +64,7 @@ public class JpaPunktDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE punkttyp CASCADE").executeUpdate();
 		em.createNativeQuery("TRUNCATE punkt CASCADE").executeUpdate();

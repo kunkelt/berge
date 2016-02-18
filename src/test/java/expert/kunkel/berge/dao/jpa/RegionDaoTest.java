@@ -12,13 +12,13 @@ import org.junit.Test;
 
 import expert.kunkel.berge.model.Region;
 
-public class JpaRegionDaoTest {
+public class RegionDaoTest {
 
-	private static JpaRegionDao dao;
+	private static RegionDao dao;
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getRegionDAO();
+		dao = DaoFactory.getInstance().getRegionDAO();
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class JpaRegionDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE region CASCADE").executeUpdate();
 		em.getTransaction().commit();

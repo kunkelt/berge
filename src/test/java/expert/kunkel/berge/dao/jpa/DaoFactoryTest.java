@@ -7,11 +7,11 @@ import javax.persistence.EntityManager;
 
 import org.junit.Test;
 
-public class JpaDaoFactoryTest {
+public class DaoFactoryTest {
 
 	@Test
 	public void testEntityManager() {
-		JpaDaoFactory jpaMgr = JpaDaoFactory.getInstance();
+		DaoFactory jpaMgr = DaoFactory.getInstance();
 		EntityManager em = jpaMgr.getEntityManager();
 
 		assertNotNull(em);
@@ -24,8 +24,8 @@ public class JpaDaoFactoryTest {
 		assertNotNull(jpaMgr.getTourDAO());
 		assertNotNull(jpaMgr.getTourentagDAO());
 		assertNotNull(jpaMgr.getVerlagDAO());
-		assertTrue(JpaDaoFactory.getInstance().getEntityManager() == 
-				JpaDaoFactory.getInstance().getEntityManager());
+		assertTrue(DaoFactory.getInstance().getEntityManager() == 
+				DaoFactory.getInstance().getEntityManager());
 	}
 
 }

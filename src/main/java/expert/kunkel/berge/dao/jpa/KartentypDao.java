@@ -6,21 +6,21 @@ import javax.persistence.EntityManager;
 
 import expert.kunkel.berge.model.Kartentyp;
 
-public class JpaKartentypDao {
+public class KartentypDao {
 
 	public List<Kartentyp> selectKartentyp() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.createQuery("SELECT kt FROM Kartentyp kt", Kartentyp.class)
 				.getResultList();
 	}
 
 	public Kartentyp findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Kartentyp.class, id);
 	}
 
 	public Kartentyp insertKartentyp(Kartentyp kartentyp) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Kartentyp kt = em.merge(kartentyp);
 		em.getTransaction().commit();

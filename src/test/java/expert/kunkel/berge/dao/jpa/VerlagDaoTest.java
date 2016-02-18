@@ -14,17 +14,17 @@ import org.junit.Test;
 
 import expert.kunkel.berge.model.Verlag;
 
-public class JpaVerlagDaoTest {
+public class VerlagDaoTest {
 
 	private static final String ANSCHRIFT = "Straße 1";
 	private static final String BEZUGSQUELLE = "Irgendwo";
 	private static final String NAME = "Name des Verlagssssssssss";
 	private static final String TELEFON = "+49 89/123789098765";
-	private static JpaVerlagDao dao;
+	private static VerlagDao dao;
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getVerlagDAO();
+		dao = DaoFactory.getInstance().getVerlagDAO();
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class JpaVerlagDaoTest {
 		verlag.setName(NAME);
 		verlag.setTelefon(TELEFON);
 
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Verlag verlag2 = em.merge(verlag);
 		em.getTransaction().commit();
@@ -66,7 +66,7 @@ public class JpaVerlagDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE verlag CASCADE").executeUpdate();
 		em.getTransaction().commit();

@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 import expert.kunkel.berge.model.Verlag;
 
 
-public class JpaVerlagDao {
+public class VerlagDao {
 
 	public List<Verlag> selectVerlag() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.createQuery("SELECT v FROM Verlag v",Verlag.class).getResultList();
 	}
 
@@ -19,7 +19,7 @@ public class JpaVerlagDao {
 	}
 
 	public Verlag findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Verlag.class, id);
 	}
 

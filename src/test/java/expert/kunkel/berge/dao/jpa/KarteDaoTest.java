@@ -13,20 +13,20 @@ import org.junit.Test;
 import expert.kunkel.berge.model.Karte;
 import expert.kunkel.berge.model.Kartentyp;
 
-public class JpaKarteDaoTest {
+public class KarteDaoTest {
 
-	private static JpaKarteDao dao;
+	private static KarteDao dao;
 
 	@BeforeClass
 	public static void setUp() {
-		dao = JpaDaoFactory.getInstance().getKarteDAO();
+		dao = DaoFactory.getInstance().getKarteDAO();
 	}
 
 	@Test
 	public void testSelectKarte() {
 		Kartentyp kartentyp = new Kartentyp();
 		kartentyp.setTyp("Analog");
-		kartentyp = JpaDaoFactory.getInstance().getKartentypDao()
+		kartentyp = DaoFactory.getInstance().getKartentypDao()
 				.insertKartentyp(kartentyp);
 
 		Karte karte = new Karte();
@@ -57,7 +57,7 @@ public class JpaKarteDaoTest {
 
 	@AfterClass
 	public static void tearDown() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.createNativeQuery("TRUNCATE karte CASCADE").executeUpdate();
 		em.createNativeQuery("TRUNCATE kartentyp CASCADE").executeUpdate();

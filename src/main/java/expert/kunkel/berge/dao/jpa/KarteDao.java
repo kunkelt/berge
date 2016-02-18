@@ -6,10 +6,10 @@ import javax.persistence.EntityManager;
 
 import expert.kunkel.berge.model.Karte;
 
-public class JpaKarteDao {
+public class KarteDao {
 
 	public Karte insertKarte(Karte karte) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Karte k = em.merge(karte);
 		em.getTransaction().commit();
@@ -17,14 +17,14 @@ public class JpaKarteDao {
 	}
 
 	public void deleteKarte(Karte karte) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.remove(karte);
 		em.getTransaction().commit();
 	}
 
 	public Karte updateKarte(Karte karte) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Karte k = em.merge(karte);
 		em.getTransaction().commit();
@@ -32,13 +32,13 @@ public class JpaKarteDao {
 	}
 
 	public List<Karte> selectKarte() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.createQuery("SELECT k FROM Karte k", Karte.class)
 				.getResultList();
 	}
 
 	public Karte findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Karte.class, id);
 	}
 }

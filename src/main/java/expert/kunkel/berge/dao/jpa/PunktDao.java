@@ -6,10 +6,10 @@ import javax.persistence.EntityManager;
 
 import expert.kunkel.berge.model.Punkt;
 
-public class JpaPunktDao {
+public class PunktDao {
 
 	public Punkt insertPunkt(Punkt punkt) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Punkt p = em.merge(punkt);
 		em.getTransaction().commit();
@@ -17,19 +17,19 @@ public class JpaPunktDao {
 	}
 
 	public void deletePunkt(Punkt p) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.remove(p);
 		em.getTransaction().commit();
 	}
 
 	public Punkt findById(Integer id) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.find(Punkt.class, id);
 	}
 
 	public Punkt updatePunkt(Punkt punkt) {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Punkt p = em.merge(punkt);
 		em.getTransaction().commit();
@@ -37,7 +37,7 @@ public class JpaPunktDao {
 	}
 
 	public List<Punkt> selectPunkt() {
-		EntityManager em = JpaDaoFactory.getInstance().getEntityManager();
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		return em.createQuery("SELECT p FROM Punkt p", Punkt.class)
 				.getResultList();
 	}
