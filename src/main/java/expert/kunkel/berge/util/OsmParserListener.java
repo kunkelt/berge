@@ -17,17 +17,17 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-import expert.kunkel.berge.dao.Punkt;
-import expert.kunkel.berge.dao.postgresql.PostgreSQL_PunkttypDAO;
+import expert.kunkel.berge.dao.jpa.DaoFactory;
+import expert.kunkel.berge.model.Punkt;
 
 public class OsmParserListener extends StreamingOsmXmlParserListener {
 
 	private Map<Long, Node> completeNodes = new HashMap<Long, Node>();
-	private PostgreSQL_PunkttypDAO punkttypDao = new PostgreSQL_PunkttypDAO();
-	private GeometryFactory factory = new GeometryFactory(new PrecisionModel(),
-			4326);
+	private static DaoFactory factory = DaoFactory.getInstance();
+	private GeometryFactory geomFactory = new GeometryFactory(
+			new PrecisionModel(), 4326);
 	private List<Punkt> punkte = new ArrayList<Punkt>();
-	
+
 	@Override
 	public void processParsedNode(Node node) {
 		completeNodes.put(node.getId(), node);
@@ -68,8 +68,8 @@ public class OsmParserListener extends StreamingOsmXmlParserListener {
 		}
 		punkt.setName(parseName(node.getTags()));
 		punkt.setName2(parseName2(node.getTags()));
-		punkt.setTyp(punkttypDao.selectPunkttyp(punkttyp));
-		punkt.setLage(factory.createPoint(new Coordinate(node.getX(), node
+		punkt.setTyp(factory.getPunkttypDAO().findById(punkttyp));
+		punkt.setLage(geomFactory.createPoint(new Coordinate(node.getX(), node
 				.getY())));
 
 		System.out.println(punkt);
@@ -110,7 +110,7 @@ public class OsmParserListener extends StreamingOsmXmlParserListener {
 		}
 		punkt.setName(parseName(way.getTags()));
 		punkt.setName2(parseName2(way.getTags()));
-		punkt.setTyp(punkttypDao.selectPunkttyp(punkttyp));
+		punkt.setTyp(factory.getPunkttypDAO().findById(punkttyp));
 
 		extractGeometryNotPoint(way, punkt);
 		System.out.println(punkt);
@@ -135,12 +135,12 @@ public class OsmParserListener extends StreamingOsmXmlParserListener {
 			}
 			if (nodes.get(0).getId() == nodes.get(nodes.size() - 1).getId()) {
 				// Polygon
-				LinearRing shell = factory.createLinearRing(coords);
-				Polygon polygon = new Polygon(shell, null, factory);
+				LinearRing shell = geomFactory.createLinearRing(coords);
+				Polygon polygon = new Polygon(shell, null, geomFactory);
 				punkt.setLage(polygon.getCentroid());
 			} else {
 				// Linie
-				LineString line = factory.createLineString(coords);
+				LineString line = geomFactory.createLineString(coords);
 				punkt.setLage(line.getCentroid());
 			}
 		}

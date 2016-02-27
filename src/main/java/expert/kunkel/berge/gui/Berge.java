@@ -14,12 +14,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,11 +23,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityManager;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -50,22 +46,21 @@ import se.kodapan.osm.parser.xml.streaming.StreamingOsmXmlParser;
 
 import com.vividsolutions.jts.geom.Polygon;
 
-import expert.kunkel.berge.dao.DAOFactory;
-import expert.kunkel.berge.dao.Karte;
-import expert.kunkel.berge.dao.KarteDAO;
-import expert.kunkel.berge.dao.Punkt;
-import expert.kunkel.berge.dao.PunktDAO;
-import expert.kunkel.berge.dao.Punkttyp;
-import expert.kunkel.berge.dao.PunkttypDAO;
-import expert.kunkel.berge.dao.Region;
-import expert.kunkel.berge.dao.RegionDAO;
-import expert.kunkel.berge.dao.Tour;
-import expert.kunkel.berge.dao.TourDAO;
-import expert.kunkel.berge.dao.postgresql.PostgreSQL_DAOFactory;
+import expert.kunkel.berge.dao.jpa.DaoFactory;
+import expert.kunkel.berge.dao.jpa.KarteDao;
+import expert.kunkel.berge.dao.jpa.PunktDao;
+import expert.kunkel.berge.dao.jpa.PunkttypDao;
+import expert.kunkel.berge.dao.jpa.RegionDao;
+import expert.kunkel.berge.dao.jpa.TourDao;
 import expert.kunkel.berge.gui.model.KarteTableModel;
 import expert.kunkel.berge.gui.model.PunktTableModel;
 import expert.kunkel.berge.gui.model.RegionTableModel;
 import expert.kunkel.berge.gui.model.TourTableModel;
+import expert.kunkel.berge.model.Karte;
+import expert.kunkel.berge.model.Punkt;
+import expert.kunkel.berge.model.Punkttyp;
+import expert.kunkel.berge.model.Region;
+import expert.kunkel.berge.model.Tour;
 import expert.kunkel.berge.ovl.OVL_Flaeche;
 import expert.kunkel.berge.util.GpxUtils;
 import expert.kunkel.berge.util.OsmParserListener;
@@ -120,13 +115,12 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 			karteTableModel);
 	private TableRowSorter<RegionTableModel> regionRowSorter = new TableRowSorter<RegionTableModel>(
 			regionTableModel);
-	private DAOFactory factory = DAOFactory
-			.getDAOFactory(DAOFactory.POSTGRESQL);
-	private TourDAO tourDao = factory.getTourDAO();
-	private KarteDAO karteDao = factory.getKarteDAO();
-	private RegionDAO regionDao = factory.getRegionDAO();
-	private PunktDAO punktDao = factory.getPunktDAO();
-	private PunkttypDAO punkttypDao = factory.getPunkttypDAO();
+	private DaoFactory factory = DaoFactory.getInstance();
+	private TourDao tourDao = factory.getTourDAO();
+	private KarteDao karteDao = factory.getKarteDAO();
+	private RegionDao regionDao = factory.getRegionDAO();
+	private PunktDao punktDao = factory.getPunktDAO();
+	private PunkttypDao punkttypDao = factory.getPunkttypDAO();
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 	private SimpleDateFormat sdfLang = new SimpleDateFormat("dd. MMMM yyyy");
 	public static final String FOLDER_UMZUG = "/Users/thorsten/";
@@ -146,12 +140,14 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 		tourRowSorter.setComparator(1, new Comparator<Integer>() {
 
+			@Override
 			public int compare(Integer o1, Integer o2) {
 				return o1.compareTo(o2);
 			}
 		});
 		tourRowSorter.setComparator(3, new Comparator<Integer>() {
 
+			@Override
 			public int compare(Integer o1, Integer o2) {
 				return o1.compareTo(o2);
 			}
@@ -306,6 +302,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		jMenuItem2.setText("Neu...");
 		jMenuItem2.setName("jMenuItem2"); // NOI18N
 		jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tourNeuActionPerformed(evt);
 			}
@@ -314,6 +311,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 		openMenuItem.setText("Öffnen");
 		openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tourOeffnenItemActionPerformed(evt);
 			}
@@ -323,6 +321,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		jMenuItem5.setText("Exportieren...");
 		jMenuItem5.setName("jMenuItem5"); // NOI18N
 		jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tourExportActionPerformed(evt);
 			}
@@ -331,6 +330,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 		exitMenuItem.setText("Beenden");
 		exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				beendenActionPerformed(evt);
 			}
@@ -345,6 +345,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		jMenuItem4.setText("Neu...");
 		jMenuItem4.setName("jMenuItem4"); // NOI18N
 		jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				punktNeuActionPerformed(evt);
 			}
@@ -354,6 +355,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		jMenuItem1.setText("Öffnen");
 		jMenuItem1.setName("jMenuItem1"); // NOI18N
 		jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				punkteOeffnenActionPerformed(evt);
 			}
@@ -363,6 +365,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miLoeschen.setText("Löschen");
 		miLoeschen.setName("miLoeschen"); // NOI18N
 		miLoeschen.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miLoeschenActionPerformed(evt);
 			}
@@ -372,6 +375,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		jMenuItem3.setText("Importieren...");
 		jMenuItem3.setName("jMenuItem3"); // NOI18N
 		jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				importPunkteActionPerformed(evt);
 			}
@@ -381,6 +385,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miExportPunkte.setText("Export...");
 		miExportPunkte.setName("miExportPunkte"); // NOI18N
 		miExportPunkte.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miExportPunkteActionPerformed(evt);
 			}
@@ -395,6 +400,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		jMenuItem6.setText("Neu...");
 		jMenuItem6.setName("jMenuItem6"); // NOI18N
 		jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				karteNeuActionPerformed(evt);
 			}
@@ -404,6 +410,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miExportKarte.setText("Export...");
 		miExportKarte.setName("miExportKarte"); // NOI18N
 		miExportKarte.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miExportKarteActionPerformed(evt);
 			}
@@ -418,6 +425,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miRegionOeffnen.setText("Öffnen");
 		miRegionOeffnen.setName("miRegionOeffnen"); // NOI18N
 		miRegionOeffnen.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miRegionOeffnenActionPerformed(evt);
 			}
@@ -427,6 +435,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miRegionExport.setText("Export...");
 		miRegionExport.setName("miRegionExport"); // NOI18N
 		miRegionExport.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miRegionExportActionPerformed(evt);
 			}
@@ -439,6 +448,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 		cutMenuItem.setText("Export chronologisch");
 		cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				exportChronoMenuItemActionPerformed(evt);
 			}
@@ -448,6 +458,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miExportGipfel.setText("Export Gipfel nach Höhe");
 		miExportGipfel.setName("miExportGipfel"); // NOI18N
 		miExportGipfel.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miExportGipfelActionPerformed(evt);
 			}
@@ -457,6 +468,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		miExportGebiete.setText("Export Gipfel nach Gebiet");
 		miExportGebiete.setName("miExportGebiete"); // NOI18N
 		miExportGebiete.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				miExportGebieteActionPerformed(evt);
 			}
@@ -522,9 +534,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 				if (touren != null && touren.size() > 0) {
 					Collections.sort(touren);
-					for (Iterator<Tour> it = touren.iterator(); it.hasNext();) {
-						Tour tour = it.next();
-
+					for (Tour tour : touren) {
 						String link = tour.getLink();
 						if (link == null || link.equals("")) {
 							content.append(tour.toString() + "<br>\r\n");
@@ -584,9 +594,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 					RandomAccessFile raf = new RandomAccessFile(f, "rw");
 
 					Collections.sort(touren);
-					for (Iterator<Tour> it = touren.iterator(); it.hasNext();) {
-						Tour tour = it.next();
-
+					for (Tour tour : touren) {
 						String link = tour.getLink();
 						if (link == null || link.equals("")) {
 							raf.writeBytes(tour.toString() + "<br>\r\n");
@@ -654,8 +662,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 			}
 
 			punktDao = factory.getPunktDAO();
-			for (Iterator<Punkt> it = result.iterator(); it.hasNext();) {
-				Punkt punkt = it.next();
+			for (Punkt punkt : result) {
 				punktDao.insertPunkt(punkt);
 			}
 
@@ -675,8 +682,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		List<Punkt> result = GpxUtils.convertGpxPunkteToObjects(jfc
 				.getSelectedFile());
 		punktDao = factory.getPunktDAO();
-		for (Iterator<Punkt> it = result.iterator(); it.hasNext();) {
-			Punkt punkt = it.next();
+		for (Punkt punkt : result) {
 			punktDao.insertPunkt(punkt);
 		}
 
@@ -690,7 +696,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 	}// GEN-LAST:event_punktNeuActionPerformed
 
 	private void tourExportActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_tourExportActionPerformed
-		int[] selectedRow = this.tourTable.getSelectedRows();
+		int[] selectedRow = tourTable.getSelectedRows();
 
 		if (selectedRow.length <= 0) {
 			JOptionPane.showMessageDialog(this,
@@ -706,8 +712,8 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 			return;
 		}
 
-		for (int i = 0; i < selectedRow.length; i++) {
-			int row = tourRowSorter.convertRowIndexToModel(selectedRow[i]);
+		for (int element : selectedRow) {
+			int row = tourRowSorter.convertRowIndexToModel(element);
 
 			if (row < 0) {
 				JOptionPane.showMessageDialog(this,
@@ -718,10 +724,9 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 			Integer tourId = (Integer) tourTableModel.getValueAt(row, 3);
 
-			List<Tour> touren = tourDao.selectTour(tourId, null);
-			if (touren != null && touren.size() == 1) {
-				exportTour(touren.get(0), jfc.getSelectedFile()
-						.getAbsolutePath());
+			Tour tour = tourDao.findById(tourId);
+			if (tour != null) {
+				exportTour(tour, jfc.getSelectedFile().getAbsolutePath());
 			} else {
 				JOptionPane.showMessageDialog(this, "Tour nicht gefunden.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -736,24 +741,14 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 	}// GEN-LAST:event_karteNeuActionPerformed
 
 	private void miLoeschenActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_miLoeschenActionPerformed
-		int row = punktRowSorter.convertRowIndexToModel(this.punktTable
+		int row = punktRowSorter.convertRowIndexToModel(punktTable
 				.getSelectedRow());
 		Integer id = (Integer) punktTableModel.getValueAt(row, 4);
 		int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Punkt "
 				+ id + " wirklich löschen?");
 		if (showConfirmDialog == JOptionPane.OK_OPTION) {
 			punktDao = factory.getPunktDAO();
-			try {
-				punktDao.deletePunkt(id);
-			} catch (SQLException ex) {
-				Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null,
-						ex);
-				JOptionPane.showMessageDialog(this, "Fehler beim Löschen: "
-						+ ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
-			} catch (ClassNotFoundException ex) {
-				Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null,
-						ex);
-			}
+			punktDao.deletePunkt(punktDao.findById(id));
 		}
 		this.reloadPunkte();
 	}// GEN-LAST:event_miLoeschenActionPerformed
@@ -788,28 +783,19 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 				String select = select1 + hoehengrenzen[i + 1] + select2
 						+ hoehengrenzen[i] + select3;
-				Connection c = PostgreSQL_DAOFactory.getConnection();
-				Statement s = c.createStatement();
-				ResultSet rs = s.executeQuery(select);
+				EntityManager em = DaoFactory.getInstance().getEntityManager();
+				List<Object[]> results = em.createNativeQuery(select)
+						.getResultList();
 
 				RandomAccessFile raf = new RandomAccessFile(f, "rw");
 
-				while (rs.next()) {
-					raf.writeBytes("<a href=\"Touren/tour" + rs.getInt(4)
-							+ "/\">" + rs.getString(2) + ", " + rs.getInt(3)
-							+ "m; " + sdfLang.format(rs.getDate(5))
-							+ "</a><br/>\r\n");
+				for (Object[] objs : results) {
+					raf.writeBytes("<a href=\"Touren/tour" + objs[3] + "/\">"
+							+ objs[1] + ", " + objs[2] + "m; "
+							+ sdfLang.format(objs[4]) + "</a><br/>\r\n");
 				}
 
 				raf.close();
-				rs.close();
-				s.close();
-			} catch (SQLException ex) {
-				Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null,
-						ex);
-			} catch (ClassNotFoundException ex) {
-				Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null,
-						ex);
 			} catch (FileNotFoundException ex) {
 				Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null,
 						ex);
@@ -838,8 +824,8 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 			return;
 		}
 
-		for (int i = 0; i < rows.length; i++) {
-			int row = karteRowSorter.convertRowIndexToModel(rows[i]);
+		for (int row2 : rows) {
+			int row = karteRowSorter.convertRowIndexToModel(row2);
 
 			if (row < 0) {
 				JOptionPane.showMessageDialog(this,
@@ -850,10 +836,9 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 			Integer karteId = (Integer) karteTableModel.getValueAt(row, 5);
 
-			List<Karte> karten = karteDao.selectKarte(karteId);
-			if (karten != null && karten.size() == 1) {
-				exportKarte(karten.get(0), jfc.getSelectedFile()
-						.getAbsolutePath());
+			Karte karte = karteDao.findById(karteId);
+			if (karte != null) {
+				exportKarte(karte, jfc.getSelectedFile().getAbsolutePath());
 			} else {
 				JOptionPane.showMessageDialog(this, "Tour nicht gefunden.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -883,8 +868,8 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 			return;
 		}
 
-		for (int i = 0; i < rows.length; i++) {
-			int row = regionRowSorter.convertRowIndexToModel(rows[i]);
+		for (int row2 : rows) {
+			int row = regionRowSorter.convertRowIndexToModel(row2);
 
 			if (row < 0) {
 				JOptionPane.showMessageDialog(this,
@@ -895,10 +880,9 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 			Integer regionId = (Integer) regionTableModel.getValueAt(row, 0);
 
-			List<Region> regionen = regionDao.selectRegion(regionId);
-			if (regionen != null && regionen.size() == 1) {
-				exportRegion(regionen.get(0), jfc.getSelectedFile()
-						.getAbsolutePath());
+			Region region = regionDao.findById(regionId);
+			if (region != null) {
+				exportRegion(region, jfc.getSelectedFile().getAbsolutePath());
 			} else {
 				JOptionPane.showMessageDialog(this, "Region nicht gefunden.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -949,6 +933,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 
+			@Override
 			public void run() {
 				new Berge().setVisible(true);
 			}
@@ -990,77 +975,82 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 	// End of variables declaration//GEN-END:variables
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == tourTable) {
 			if (e.getClickCount() == 2) {
-				int row = tourRowSorter.convertRowIndexToModel(this.tourTable
+				int row = tourRowSorter.convertRowIndexToModel(tourTable
 						.getSelectedRow());
 				Integer tourId = (Integer) tourTableModel.getValueAt(row, 3);
 
-				List<Tour> touren = tourDao.selectTour(tourId, null);
-				if (touren != null && touren.size() == 1) {
-					TourDialog td = new TourDialog(this, touren.get(0));
+				Tour tour = tourDao.findById(tourId);
+				if (tour != null) {
+					TourDialog td = new TourDialog(this, tour);
 					td.setVisible(true);
 				}
 			}
 		} else if (e.getSource() == punktTable) {
 			if (e.getClickCount() == 2) {
-				int row = punktRowSorter.convertRowIndexToModel(this.punktTable
+				int row = punktRowSorter.convertRowIndexToModel(punktTable
 						.getSelectedRow());
 				Integer punktId = (Integer) punktTableModel.getValueAt(row, 4);
 
 				punktDao = factory.getPunktDAO();
 
-				List<Punkt> punkte = punktDao.selectPunkt(punktId);
-				if (punkte != null && punkte.size() == 1) {
-					PunktDialog pd = new PunktDialog(this, punkte.get(0));
+				Punkt punkt = punktDao.findById(punktId);
+				if (punkt != null) {
+					PunktDialog pd = new PunktDialog(this, punkt);
 					pd.setVisible(true);
 				}
 			}
 		} else if (e.getSource() == karteTable) {
 			if (e.getClickCount() == 2) {
-				int row = karteRowSorter.convertRowIndexToModel(this.karteTable
+				int row = karteRowSorter.convertRowIndexToModel(karteTable
 						.getSelectedRow());
 				Integer karteId = (Integer) karteTableModel.getValueAt(row, 5);
 
-				List<Karte> karten = karteDao.selectKarte(karteId);
-				if (karten != null && karten.size() == 1) {
-					KarteDialog kd = new KarteDialog(this, karten.get(0));
+				Karte karte = karteDao.findById(karteId);
+				if (karte != null) {
+					KarteDialog kd = new KarteDialog(this, karte);
 					kd.setVisible(true);
 				}
 			}
 		} else if (e.getSource() == regionTable) {
 			if (e.getClickCount() == 2) {
-				int row = regionRowSorter
-						.convertRowIndexToModel(this.regionTable
-								.getSelectedRow());
+				int row = regionRowSorter.convertRowIndexToModel(regionTable
+						.getSelectedRow());
 				Integer regionId = (Integer) regionTableModel
 						.getValueAt(row, 0);
 
-				List<Region> regionen = regionDao.selectRegion(regionId);
-				if (regionen != null && regionen.size() == 1) {
-					RegionDialog dialog = new RegionDialog(this,
-							regionen.get(0));
+				Region region = regionDao.findById(regionId);
+				if (region != null) {
+					RegionDialog dialog = new RegionDialog(this, region);
 					dialog.setVisible(true);
 				}
 			}
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
 	protected void reloadTouren() {
-		tourTableModel.setData(factory.getTourDAO().selectTour(null));
+		List<Tour> listTouren = factory.getTourDAO().selectTour(null);
+		Collections.sort(listTouren);
+		tourTableModel.setData(listTouren);
 	}
 
 	protected void reloadPunkte() {

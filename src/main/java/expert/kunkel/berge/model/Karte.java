@@ -13,7 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
-import org.postgis.PGgeometry;
+import org.hibernate.annotations.Type;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * The persistent class for the karte database table.
@@ -33,7 +35,8 @@ public class Karte implements Serializable {
 
 	private String blattnummer;
 
-	private PGgeometry extent;
+	@Type(type = "org.hibernate.spatial.GeometryType")
+	private Polygon extent;
 
 	private String isbn;
 
@@ -84,11 +87,11 @@ public class Karte implements Serializable {
 		this.blattnummer = blattnummer;
 	}
 
-	public PGgeometry getExtent() {
+	public Polygon getExtent() {
 		return extent;
 	}
 
-	public void setExtent(PGgeometry extent) {
+	public void setExtent(Polygon extent) {
 		this.extent = extent;
 	}
 
@@ -238,4 +241,10 @@ public class Karte implements Serializable {
 		return true;
 	}
 
+	public String getAusgabejahrAsString() {
+		if (ausgabejahr == 0) {
+			return null;
+		}
+		return Integer.toString(ausgabejahr);
+	}
 }

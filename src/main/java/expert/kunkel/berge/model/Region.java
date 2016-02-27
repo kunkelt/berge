@@ -13,7 +13,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-import org.postgis.PGgeometry;
+import org.hibernate.annotations.Type;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * The persistent class for the region database table.
@@ -92,7 +94,8 @@ public class Region implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REGION_ID_GENERATOR")
 	private Integer id;
 
-	private PGgeometry extent;
+	@Type(type = "org.hibernate.spatial.GeometryType")
+	private Polygon extent;
 
 	private String name;
 
@@ -127,11 +130,11 @@ public class Region implements Serializable {
 		this.id = id;
 	}
 
-	public PGgeometry getExtent() {
+	public Polygon getExtent() {
 		return extent;
 	}
 
-	public void setExtent(PGgeometry extent) {
+	public void setExtent(Polygon extent) {
 		this.extent = extent;
 	}
 

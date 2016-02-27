@@ -1,6 +1,7 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import javax.persistence.SequenceGenerator;
  */
 @Entity
 @NamedQuery(name = "Tour.findAll", query = "SELECT t FROM Tour t")
-public class Tour implements Serializable {
+public class Tour implements Serializable, Comparable<Tour> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -227,4 +228,29 @@ public class Tour implements Serializable {
 		return true;
 	}
 
+	public boolean hasCompleteTourenabschnitte() throws ClassNotFoundException,
+			SQLException {
+		boolean complete = true;
+		for (Tourentag tag : getTourentage()) {
+			if (tag.getTourabschnitte().isEmpty()) {
+				complete = false;
+			}
+		}
+		return complete;
+	}
+
+	@Override
+	public int compareTo(Tour t2) {
+		Tour t1 = this;
+
+		if (t2 == null || t2.getTourentage().isEmpty()) {
+			return 1;
+		}
+
+		if (t1.getTourentage().isEmpty()) {
+			return -1;
+		}
+
+		return t1.getTourentage().get(0).compareTo(t2.getTourentage().get(0));
+	}
 }

@@ -3,6 +3,7 @@ package expert.kunkel.berge.dao.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import expert.kunkel.berge.model.Tourabschnitt;
@@ -22,6 +23,16 @@ public class TourabschnittDao {
 		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		em.remove(ttag);
+		em.getTransaction().commit();
+	}
+
+	public void deleteAllTourenabschnitte(Tourentag ttag) {
+		EntityManager em = DaoFactory.getInstance().getEntityManager();
+		em.getTransaction().begin();
+		Query query = em
+				.createQuery("DELETE from Tourenabschnitt t WHERE t.tag = :ttag");
+		query.setParameter("ttag", ttag);
+		query.executeUpdate();
 		em.getTransaction().commit();
 	}
 

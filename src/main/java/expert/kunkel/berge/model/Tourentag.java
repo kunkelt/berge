@@ -26,7 +26,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 @Entity
 @NamedQuery(name = "Tourentag.findAll", query = "SELECT t FROM Tourentag t")
-public class Tourentag implements Serializable {
+public class Tourentag implements Serializable, Comparable<Tourentag> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -332,4 +332,35 @@ public class Tourentag implements Serializable {
 		this.tour = tour;
 	}
 
+	public String getGehzeitAsString() {
+		if (gehzeit != null) {
+			return gehzeit.toString();
+		}
+		return null;
+	}
+
+	public String getHmAbstiegAsString() {
+		if (hmabstieg != null) {
+			return hmabstieg.toString();
+		}
+		return null;
+	}
+
+	public String getHmAufstiegAsString() {
+		if (hmaufstieg != null) {
+			return hmaufstieg.toString();
+		}
+		return null;
+	}
+
+	@Override
+	public int compareTo(Tourentag o) {
+		if (datum == null) {
+			return -1;
+		}
+		if (o == null || o.datum == null) {
+			return 1;
+		}
+		return o.datum.compareTo(datum);
+	}
 }

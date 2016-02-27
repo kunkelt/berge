@@ -10,12 +10,9 @@
  */
 package expert.kunkel.berge.gui;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -25,14 +22,14 @@ import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
-import expert.kunkel.berge.dao.DAOFactory;
-import expert.kunkel.berge.dao.Punkt;
-import expert.kunkel.berge.dao.PunktDAO;
-import expert.kunkel.berge.dao.Tour;
-import expert.kunkel.berge.dao.TourDAO;
-import expert.kunkel.berge.dao.Tourabschnitt;
-import expert.kunkel.berge.dao.TourabschnittDAO;
-import expert.kunkel.berge.dao.Tourentag;
+import expert.kunkel.berge.dao.jpa.DaoFactory;
+import expert.kunkel.berge.dao.jpa.PunktDao;
+import expert.kunkel.berge.dao.jpa.TourDao;
+import expert.kunkel.berge.dao.jpa.TourabschnittDao;
+import expert.kunkel.berge.model.Punkt;
+import expert.kunkel.berge.model.Tour;
+import expert.kunkel.berge.model.Tourabschnitt;
+import expert.kunkel.berge.model.Tourentag;
 
 /**
  *
@@ -42,10 +39,9 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = -284018233115431559L;
 	private Tourentag ttag = null;
-	private static DAOFactory factory = DAOFactory
-			.getDAOFactory(DAOFactory.POSTGRESQL);
-	private static TourabschnittDAO taDao = factory.getTourabschnittDAO();
-	private static PunktDAO punktDao = factory.getPunktDAO();
+	private static DaoFactory factory = DaoFactory.getInstance();
+	private static TourabschnittDao taDao = factory.getTourabschnittDAO();
+	private static PunktDao punktDao = factory.getPunktDAO();
 
 	/** Creates new form TourenabschnittDialog */
 	public TourenabschnittDialog(java.awt.Frame parent, Tourentag ttag) {
@@ -71,15 +67,7 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 		punktColumn.setCellEditor(new ComboBoxCellEditor(comboBox));
 
 		List<Tourabschnitt> tas = null;
-		try {
-			tas = taDao.selectTourabschnitt(ttag);
-		} catch (SQLException ex) {
-			Logger.getLogger(TourenabschnittDialog.class.getName()).log(
-					Level.SEVERE, null, ex);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(TourenabschnittDialog.class.getName()).log(
-					Level.SEVERE, null, ex);
-		}
+		tas = taDao.selectTourabschnitt(ttag);
 
 		for (int i = 0; i < tas.size(); i++) {
 			Tourabschnitt ta = tas.get(i);
@@ -119,6 +107,7 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 		jButton1.setText("OK");
 		jButton1.setName("jButton1"); // NOI18N
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				okActionPerformed(evt);
 			}
@@ -127,6 +116,7 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 		jButton2.setText("Abbrechen");
 		jButton2.setName("jButton2"); // NOI18N
 		jButton2.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				abbrechenActionPerformed(evt);
 			}
@@ -197,18 +187,8 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 			punkte.add(p);
 			i++;
 		}
-		try {
-			// zunächst die Tourenabschnitte löschen
-			taDao.deleteTourabschnitt(ttag);
-		} catch (SQLException ex) {
-			Logger.getLogger(TourenabschnittDialog.class.getName()).log(
-					Level.SEVERE, null, ex);
-			JOptionPane.showMessageDialog(this, "Fehler beim Speichern!",
-					"Fehler", JOptionPane.ERROR_MESSAGE);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(TourenabschnittDialog.class.getName()).log(
-					Level.SEVERE, null, ex);
-		}
+		// zunächst die Tourenabschnitte löschen
+		taDao.deleteAllTourenabschnitte(ttag);
 
 		// jetzt die Tourabschnitte speichern
 		for (int j = 0; j < punkte.size() - 1; j++) {
@@ -216,20 +196,12 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 			Punkt nachPunkt = punkte.get(j + 1);
 
 			Tourabschnitt ta = new Tourabschnitt();
-			ta.setTtag(ttag);
+			ta.setTourentag(ttag);
 			ta.setVonPunkt(vonPunkt);
 			ta.setNachPunkt(nachPunkt);
 			ta.setSequenz(j + 1);
 
-			try {
-				taDao.insertTourabschnitt(ta);
-			} catch (SQLException ex) {
-				Logger.getLogger(TourenabschnittDialog.class.getName()).log(
-						Level.SEVERE, null, ex);
-			} catch (ClassNotFoundException ex) {
-				Logger.getLogger(TourenabschnittDialog.class.getName()).log(
-						Level.SEVERE, null, ex);
-			}
+			taDao.insertTourabschnitt(ta);
 		}
 
 		this.setVisible(false);
@@ -254,31 +226,22 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 
 		java.awt.EventQueue.invokeLater(new Runnable() {
 
+			@Override
 			public void run() {
-				DAOFactory factory = DAOFactory
-						.getDAOFactory(DAOFactory.POSTGRESQL);
-				TourDAO tourDao = factory.getTourDAO();
-				List<Tour> touren = tourDao.selectTour(1, null);
+				DaoFactory factory = DaoFactory.getInstance();
+				TourDao tourDao = factory.getTourDAO();
+				Tour tour = tourDao.findById(1);
 				TourenabschnittDialog dialog;
-				try {
-					dialog = new TourenabschnittDialog(
-							new javax.swing.JFrame(), touren.get(0)
-									.getTourentage().get(0));
-					dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+				dialog = new TourenabschnittDialog(new javax.swing.JFrame(),
+						tour.getTourentage().get(0));
+				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
-						@Override
-						public void windowClosing(java.awt.event.WindowEvent e) {
-							System.exit(0);
-						}
-					});
-					dialog.setVisible(true);
-				} catch (SQLException ex) {
-					Logger.getLogger(TourenabschnittDialog.class.getName())
-							.log(Level.SEVERE, null, ex);
-				} catch (ClassNotFoundException ex) {
-					Logger.getLogger(TourenabschnittDialog.class.getName())
-							.log(Level.SEVERE, null, ex);
-				}
+					@Override
+					public void windowClosing(java.awt.event.WindowEvent e) {
+						System.exit(0);
+					}
+				});
+				dialog.setVisible(true);
 			}
 		});
 	}
