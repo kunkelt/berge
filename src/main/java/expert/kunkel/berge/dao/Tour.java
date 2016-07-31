@@ -18,7 +18,6 @@ import expert.kunkel.berge.util.StringUtils;
 
 public class Tour implements java.io.Serializable, Comparable<Tour> {
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd. MMMM yyyy");
 	private DAOFactory factory = DAOFactory
 			.getDAOFactory(DAOFactory.POSTGRESQL);
 	private static final long serialVersionUID = 6367515334052469880L;
@@ -30,13 +29,10 @@ public class Tour implements java.io.Serializable, Comparable<Tour> {
 	private boolean geplant;
 	private List<Karte> karten = new ArrayList<Karte>();
 	private List<Tourentag> ttage = new ArrayList<Tourentag>();
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd. MMMM yyyy");
 
 	public String getBeschreibung() {
 		return beschreibung;
-	}
-
-	public String getBeschreibungAsHtml() {
-		return StringUtils.encodeHTML(beschreibung);
 	}
 
 	public void setBeschreibung(String beschreibung) {
@@ -53,10 +49,6 @@ public class Tour implements java.io.Serializable, Comparable<Tour> {
 
 	public String getName() {
 		return name;
-	}
-
-	public String getNameAsHtml() {
-		return StringUtils.encodeHTML(name);
 	}
 
 	public void setName(String name) {
@@ -89,25 +81,6 @@ public class Tour implements java.io.Serializable, Comparable<Tour> {
 
 	public void setGeplant(boolean geplant) {
 		this.geplant = geplant;
-	}
-
-	public String getZusatzinfoMitKmlAsHtml(String folder) {
-		String result = "<p>";
-		try {
-			Kml kml = getTourenverlaufAsKml();
-			kml.createKml(folder + "tour" + id + ".kml");
-			result += "<a href=\"tour" + id + ".kml\">";
-			result += "Tourenverlauf als KML-Datei f&uuml;r Google Earth";
-			result += "</a></p>";
-			if (zusatzinfo != null && !zusatzinfo.equals("")) {
-				result += zusatzinfo;
-			}
-		} catch (KmlException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return result;
 	}
 
 	public void setZusatzinfo(String zusatzinfo) {
@@ -215,139 +188,6 @@ public class Tour implements java.io.Serializable, Comparable<Tour> {
 		}
 
 		return result;
-	}
-
-	public String getZeitraumAsHtml() throws SQLException,
-			ClassNotFoundException {
-		return StringUtils.encodeHTML(getZeitraum());
-	}
-
-	public String getKartenAsHtmlList() {
-		StringBuffer result = new StringBuffer();
-
-		if (karten.size() == 0) {
-			return "<ul><li>Keine.</li></ul>";
-		}
-
-		result.append("<ul>");
-		for (int i = 0; i < karten.size(); i++) {
-			Karte karte = karten.get(i);
-			result.append("<li>");
-			result.append(karte.toHtmlString());
-			result.append("</li>\r\n");
-		}
-		result.append("</ul>");
-		return result.toString();
-	}
-
-	public String getTourenverlaufAsHtml() {
-		try {
-			StringBuffer sb = new StringBuffer();
-			List<Tourentag> ttage = this.getTourentage();
-			for (int i = 0; i < ttage.size(); i++) {
-				Tourentag tourentag = ttage.get(i);
-				sb.append(tourentag.getTourenverlaufAsHtml());
-			}
-			return sb.toString();
-		} catch (SQLException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return "Fehler!";
-	}
-
-	private Kml getTourenverlaufAsKml() {
-		try {
-			Kml kml = new Kml();
-			Document document = new Document();
-			document.setName(this.getName());
-			kml.setFeature(document);
-
-			List<Tourentag> ttage = this.getTourentage();
-
-			for (int i = 0; i < ttage.size(); i++) {
-				Tourentag ttag = ttage.get(i);
-
-				TourabschnittDAO taDao = factory.getTourabschnittDAO();
-				List<Tourabschnitt> tas = taDao.selectTourabschnitt(ttag);
-
-				Document doc = new Document();
-				doc.setName(sdf.format(ttag.getDate()) + ", Tag " + (i + 1));
-				document.addFeature(doc);
-
-				for (int j = 0; j < tas.size(); j++) {
-					Tourabschnitt ta = tas.get(j);
-
-					if (j == 0) {
-						Placemark placemark = new Placemark();
-						Point point = new Point(ta.getVonPunkt().getLage()
-								.getX(), ta.getVonPunkt().getLage().getY());
-						placemark.setGeometry(point);
-						placemark.setName(ta.getVonPunkt().getName());
-						doc.addFeature(placemark);
-					}
-
-					Placemark placemark = new Placemark();
-					Point point = new Point(ta.getNachPunkt().getLage().getX(),
-							ta.getNachPunkt().getLage().getY());
-					placemark.setGeometry(point);
-					placemark.setName(ta.getNachPunkt().getName());
-					doc.addFeature(placemark);
-				}
-			}
-
-			return kml;
-		} catch (SQLException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return null;
-	}
-
-	public String getTourenberichtAsHtml() {
-		try {
-			StringBuffer sb = new StringBuffer();
-			List<Tourentag> ttage = this.getTourentage();
-			for (int i = 0; i < ttage.size(); i++) {
-				Tourentag tourentag = ttage.get(i);
-				sb.append(tourentag.getTourenberichtAsHtml());
-			}
-
-			// nach den Tourentagen bauen wir noch die Bildergalerie hinten an
-			GaleriebildDAO bildDao = factory.getGaleriebildDAO();
-			List<Galeriebild> bilder = bildDao.selectGaleriebild(this);
-
-			for (int i = 0; i < bilder.size(); i++) {
-				Galeriebild bild = bilder.get(i);
-
-				sb.append("<p align=\"center\">");
-				sb.append("<img src=\"");
-				sb.append(bild.getDateiname());
-				sb.append("\" alt=\"");
-				sb.append(bild.getTitelAsHtml());
-				sb.append("\" title=\"");
-				sb.append(bild.getTitelAsHtml());
-				sb.append("\" border=\"0\"");
-				if (bild.getBreite() > 0) {
-					sb.append(" width=\"" + bild.getBreite() + "\"");
-				}
-				if (bild.getHoehe() > 0) {
-					sb.append(" height=\"" + bild.getHoehe() + "\"");
-				}
-				sb.append("><br>");
-				sb.append(bild.getTitelAsHtml());
-				sb.append("</p>");
-			}
-
-			return sb.toString();
-		} catch (SQLException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(Tour.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return "Fehler!";
 	}
 
 	public boolean hasCompleteTourenabschnitte() throws ClassNotFoundException,

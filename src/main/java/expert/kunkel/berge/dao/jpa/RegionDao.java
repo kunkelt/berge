@@ -27,8 +27,8 @@ public class RegionDao {
 
 	public List<Region> selectRegion() {
 		EntityManager em = DaoFactory.getInstance().getEntityManager();
-		return em.createQuery("SELECT r FROM Region r", Region.class)
-				.getResultList();
+		return em.createQuery("SELECT r FROM Region r ORDER BY name",
+				Region.class).getResultList();
 	}
 
 	public Region findById(Integer id) {
@@ -50,7 +50,7 @@ public class RegionDao {
 		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		@SuppressWarnings("unchecked")
 		List<Object[]> result = em.createNativeQuery(sb.toString())
-		.getResultList();
+				.getResultList();
 
 		for (Object[] o : result) {
 			list.add(findById((Integer) o[0]));

@@ -37,7 +37,10 @@ import expert.kunkel.berge.model.Tourentag;
 public class TourentagDialog extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = -7328448511087311436L;
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+	// private static NumberFormat FIXME
+
 	private DefaultComboBoxModel regionCbModel = null;
 	private Tourentag ttag = null;
 	private DaoFactory factory = DaoFactory.getInstance();
@@ -450,9 +453,15 @@ public class TourentagDialog extends javax.swing.JDialog {
 	private void bOKActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_bOKActionPerformed
 		// ändern der Daten
 		ttag.setBeschreibung(taBeschreibung.getText());
-		ttag.setGehzeit(Double.parseDouble(tfGehzeit.getText()));
-		ttag.setHmabstieg(Integer.parseInt(tfAbstieg.getText()));
-		ttag.setHmaufstieg(Integer.parseInt(tfAufstieg.getText()));
+		if (!tfGehzeit.getText().trim().equals("")) {
+			ttag.setGehzeit(Double.parseDouble(tfGehzeit.getText()));
+		}
+		if (!tfAbstieg.getText().trim().equals("")) {
+			ttag.setHmabstieg(Integer.parseInt(tfAbstieg.getText()));
+		}
+		if (!tfAufstieg.getText().trim().equals("")) {
+			ttag.setHmaufstieg(Integer.parseInt(tfAufstieg.getText()));
+		}
 		ttag.setSchwierigkt(tfSchwierig.getText());
 		ttag.setBilddatei(tfBilddatei.getText());
 		ttag.setBildtitel(tfBildtitel.getText());

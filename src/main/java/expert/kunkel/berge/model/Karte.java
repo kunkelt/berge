@@ -247,4 +247,19 @@ public class Karte implements Serializable {
 		}
 		return Integer.toString(ausgabejahr);
 	}
+
+	@Override
+	public String toString() {
+		String result = "" + titel;
+		if (untertitel != null) {
+			result += ", " + untertitel;
+		}
+		if (blattnummer != null) {
+			result += "; Blatt " + blattnummer + " ";
+		}
+		if (massstab != null) {
+			result += "; Maßstab " + massstab;
+		}
+		return result;
+	}
 }

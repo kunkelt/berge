@@ -102,13 +102,19 @@ CREATE TABLE public.tourabschnitt
   sequenz integer NOT NULL,
   von_punkt integer,
   nach_punkt integer,
-  CONSTRAINT pk_abschnitt PRIMARY KEY (id_tour, tag, sequenz),
+  id_tourentag integer NOT NULL,
+  id integer NOT NULL DEFAULT nextval('id_tourabschnitt'::regclass),
+  CONSTRAINT tourabschnitt_pkey PRIMARY KEY (id),
   CONSTRAINT fk_nach_punkt FOREIGN KEY (nach_punkt)
       REFERENCES public.punkt (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT fk_von_punkt FOREIGN KEY (von_punkt)
       REFERENCES public.punkt (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT tourabschnitt_id_tourentag_fkey FOREIGN KEY (id_tourentag)
+      REFERENCES public.tourentag (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT tourabschnitt_id_tourentag_sequenz_key UNIQUE (id_tourentag, sequenz)
 );
 
 CREATE TABLE public.tourentag

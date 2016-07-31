@@ -114,25 +114,6 @@ public class Karte implements java.io.Serializable {
         return result;
     }
 
-    public String toHtmlString() {
-        String result = "";
-
-        if (verlag != null) {
-            result += verlag.getName() + "; ";
-        }
-        result += titel;
-        if (untertitel != null) {
-            result += ", " + untertitel;
-        }
-        if (blattnummer != null) {
-            result += "; Blatt " + blattnummer;
-        }
-        if (massstab != null) {
-            result += "; Maßstab " + massstab;
-        }
-        return StringUtils.encodeHTML(result);
-    }
-
     public String getMassstab() {
         return massstab;
     }

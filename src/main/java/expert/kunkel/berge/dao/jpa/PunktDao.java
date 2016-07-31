@@ -38,8 +38,8 @@ public class PunktDao {
 
 	public List<Punkt> selectPunkt() {
 		EntityManager em = DaoFactory.getInstance().getEntityManager();
-		return em.createQuery("SELECT p FROM Punkt p", Punkt.class)
-				.getResultList();
+		return em.createQuery("SELECT p FROM Punkt p ORDER BY name",
+				Punkt.class).getResultList();
 	}
 
 }

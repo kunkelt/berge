@@ -43,15 +43,24 @@ public class GpxUtils {
 		for (WptType wptType : waypoints) {
 			Punkt p = new Punkt();
 
-			p.setHoehe(wptType.getEle().intValue());
+			if (wptType.getEle() != null) {
+				p.setHoehe(wptType.getEle().intValue());
+				Coordinate c = new Coordinate(wptType.getLon().doubleValue(),
+						wptType.getLat().doubleValue(), wptType.getEle()
+								.doubleValue());
+				CoordinateArraySequence cas = new CoordinateArraySequence(
+						new Coordinate[] { c });
+				Point point = new Point(cas, new GeometryFactory());
+				p.setLage(point);
+			} else {
+				Coordinate c = new Coordinate(wptType.getLon().doubleValue(),
+						wptType.getLat().doubleValue());
+				CoordinateArraySequence cas = new CoordinateArraySequence(
+						new Coordinate[] { c });
+				Point point = new Point(cas, new GeometryFactory());
+				p.setLage(point);
+			}
 
-			Coordinate c = new Coordinate(wptType.getLon().doubleValue(),
-					wptType.getLat().doubleValue(), wptType.getEle()
-					.doubleValue());
-			CoordinateArraySequence cas = new CoordinateArraySequence(
-					new Coordinate[] { c });
-			Point point = new Point(cas, new GeometryFactory());
-			p.setLage(point);
 			p.setTyp(punkttypdao.findById(7));
 			p.setName(wptType.getName());
 
@@ -62,7 +71,7 @@ public class GpxUtils {
 	}
 
 	public static void main(String args[]) throws JAXBException,
-	FileNotFoundException {
+			FileNotFoundException {
 		List<Punkt> result = convertGpxPunkteToObjects(new File(
 				"C:/tmp/Punkte für Import.gpx"));
 		PunktDao punktDao = factory.getPunktDAO();

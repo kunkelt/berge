@@ -280,4 +280,16 @@ public class Punkt implements Serializable {
 		return vonTourabschnitt;
 	}
 
+	@Override
+	public String toString() {
+		String result = "" + name;
+		if (name2 != null) {
+			result += " (" + name2 + ")";
+		}
+		result += ", " + hoehe + "m";
+		if (getTyp() != null) {
+			result += " (" + getTyp().getName() + ")";
+		}
+		return result;
+	}
 }

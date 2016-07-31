@@ -518,7 +518,7 @@ public class TourDialog extends javax.swing.JDialog {
 			tour.setKarten(listKarten.getSelectedValuesList());
 			tour.setGeplant(cbGeplant.isSelected());
 			TourDao tourDao = factory.getTourDAO();
-			tourDao.insertTour(tour);
+			tour = tourDao.insertTour(tour);
 		} else { // bestehende Tour aktualisieren
 			tour.setName(tfName.getText());
 			tour.setBeschreibung(taBeschreibung.getText());
@@ -545,7 +545,8 @@ public class TourDialog extends javax.swing.JDialog {
 						* i));
 
 				TourentagDao ttDao = factory.getTourentagDAO();
-				ttDao.insertTourentag(tt);
+				tt = ttDao.insertTourentag(tt);
+				tour.addTourentage(tt);
 			}
 		}
 

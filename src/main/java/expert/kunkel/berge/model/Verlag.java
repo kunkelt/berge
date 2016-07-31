@@ -174,4 +174,8 @@ public class Verlag implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

@@ -30,7 +30,7 @@ public class TourabschnittDao {
 		EntityManager em = DaoFactory.getInstance().getEntityManager();
 		em.getTransaction().begin();
 		Query query = em
-				.createQuery("DELETE from Tourenabschnitt t WHERE t.tag = :ttag");
+				.createQuery("DELETE from Tourabschnitt t WHERE t.tourentag = :ttag");
 		query.setParameter("ttag", ttag);
 		query.executeUpdate();
 		em.getTransaction().commit();

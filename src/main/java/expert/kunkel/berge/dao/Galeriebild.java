@@ -66,10 +66,6 @@ public class Galeriebild implements Serializable{
         return titel;
     }
 
-    public String getTitelAsHtml() {
-        return StringUtils.encodeHTML(titel) ;
-    }
-
     public void setTitel(String titel) {
         this.titel = titel;
     }

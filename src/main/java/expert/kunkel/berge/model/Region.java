@@ -53,7 +53,7 @@ public class Region implements Serializable {
 			if (other.extent != null) {
 				return false;
 			}
-		} else if (!extent.equals(other.extent)) {
+		} else if (other.extent == null || !extent.equals(other.extent)) {
 			return false;
 		}
 		if (id == null) {
@@ -214,4 +214,8 @@ public class Region implements Serializable {
 		return tourentage;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
 }

@@ -1,6 +1,7 @@
 package expert.kunkel.berge.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,8 @@ import com.vividsolutions.jts.geom.Polygon;
 @NamedQuery(name = "Tourentag.findAll", query = "SELECT t FROM Tourentag t")
 public class Tourentag implements Serializable, Comparable<Tourentag> {
 	private static final long serialVersionUID = 1L;
+
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 	@Id
 	@SequenceGenerator(name = "TOURENTAG_ID_GENERATOR", sequenceName = "ID_TOURENTAG", allocationSize = 1)
@@ -363,4 +366,11 @@ public class Tourentag implements Serializable, Comparable<Tourentag> {
 		}
 		return o.datum.compareTo(datum);
 	}
+
+	@Override
+	public String toString() {
+		return "Tag " + this.getTag() + " (" + sdf.format(this.getDatum())
+				+ ")";
+	}
+
 }

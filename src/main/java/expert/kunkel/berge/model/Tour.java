@@ -2,6 +2,7 @@ package expert.kunkel.berge.model;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ import javax.persistence.SequenceGenerator;
 @NamedQuery(name = "Tour.findAll", query = "SELECT t FROM Tour t")
 public class Tour implements Serializable, Comparable<Tour> {
 	private static final long serialVersionUID = 1L;
+
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd. MMMM yyyy");
 
 	@Id
 	@SequenceGenerator(name = "TOUR_ID_GENERATOR", sequenceName = "ID_TOUR", allocationSize = 1)
@@ -232,7 +235,8 @@ public class Tour implements Serializable, Comparable<Tour> {
 			SQLException {
 		boolean complete = true;
 		for (Tourentag tag : getTourentage()) {
-			if (tag.getTourabschnitte().isEmpty()) {
+			if (tag.getTourabschnitte() == null
+					|| tag.getTourabschnitte().isEmpty()) {
 				complete = false;
 			}
 		}
@@ -252,5 +256,63 @@ public class Tour implements Serializable, Comparable<Tour> {
 		}
 
 		return t1.getTourentage().get(0).compareTo(t2.getTourentage().get(0));
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(name);
+		sb.append(" (");
+
+		List<Tourentag> ttage = null;
+		ttage = getTourentage();
+
+		if (ttage != null) {
+			List<Region> regionen = new ArrayList<Region>();
+
+			for (int i = 0; i < ttage.size(); i++) {
+				Tourentag ttag = ttage.get(i);
+
+				if (!regionen.contains(ttag.getRegion())) {
+					regionen.add(ttag.getRegion());
+				}
+			}
+
+			for (int i = 0; i < regionen.size(); i++) {
+				Region region = regionen.get(i);
+
+				if (i != 0) {
+					sb.append("/");
+				}
+
+				sb.append(region.getName());
+			}
+			sb.append("; ");
+
+			Tourentag ttag = ttage.get(0);
+
+			sb.append(sdf.format(ttag.getDatum()));
+
+			if (ttage.size() > 1) {
+				ttag = ttage.get(ttage.size() - 1);
+				sb.append(" - ");
+				sb.append(sdf.format(ttag.getDatum()));
+			}
+		}
+		sb.append(")");
+
+		return sb.toString();
+	}
+
+	public String getZeitraum() {
+		List<Tourentag> ttage = this.getTourentage();
+		String result = sdf.format(ttage.get(0).getDatum());
+
+		if (ttage.size() > 1) {
+			result += " bis ";
+			result += sdf.format(ttage.get(ttage.size() - 1).getDatum());
+		}
+
+		return result;
 	}
 }

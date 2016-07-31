@@ -33,8 +33,8 @@ public class KarteDao {
 
 	public List<Karte> selectKarte() {
 		EntityManager em = DaoFactory.getInstance().getEntityManager();
-		return em.createQuery("SELECT k FROM Karte k", Karte.class)
-				.getResultList();
+		return em.createQuery("SELECT k FROM Karte k ORDER BY titel",
+				Karte.class).getResultList();
 	}
 
 	public Karte findById(Integer id) {

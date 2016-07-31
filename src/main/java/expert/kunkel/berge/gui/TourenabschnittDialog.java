@@ -130,45 +130,45 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 				.addGroup(
 						javax.swing.GroupLayout.Alignment.TRAILING,
 						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.TRAILING)
-												.addComponent(
-														jScrollPane1,
-														javax.swing.GroupLayout.Alignment.LEADING,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														443, Short.MAX_VALUE)
+						.addContainerGap()
+						.addGroup(
+								layout.createParallelGroup(
+										javax.swing.GroupLayout.Alignment.TRAILING)
+										.addComponent(
+												jScrollPane1,
+												javax.swing.GroupLayout.Alignment.LEADING,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												443, Short.MAX_VALUE)
 												.addGroup(
 														layout.createSequentialGroup()
-																.addComponent(
-																		jButton1)
+														.addComponent(
+																jButton1)
 																.addPreferredGap(
 																		javax.swing.LayoutStyle.ComponentPlacement.RELATED,
 																		311,
 																		Short.MAX_VALUE)
-																.addComponent(
-																		jButton2)))
-								.addContainerGap()));
+																		.addComponent(
+																				jButton2)))
+																				.addContainerGap()));
 		layout.setVerticalGroup(layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						javax.swing.GroupLayout.Alignment.TRAILING,
 						layout.createSequentialGroup()
-								.addContainerGap(
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
+						.addContainerGap(
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)
 								.addComponent(jScrollPane1,
 										javax.swing.GroupLayout.PREFERRED_SIZE,
 										410,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(18, 18, 18)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jButton2)
-												.addComponent(jButton1))
-								.addContainerGap()));
+										.addGap(18, 18, 18)
+										.addGroup(
+												layout.createParallelGroup(
+														javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(jButton2)
+														.addComponent(jButton1))
+														.addContainerGap()));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -216,8 +216,8 @@ public class TourenabschnittDialog extends javax.swing.JDialog {
 	 * @throws ClassNotFoundException
 	 */
 	public static void main(String args[]) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException {
+	InstantiationException, IllegalAccessException,
+	UnsupportedLookAndFeelException {
 		// System.setProperty("apple.laf.useScreenMenuBar", "true");
 		// System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 		// "WikiTeX");

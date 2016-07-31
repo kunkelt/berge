@@ -5,11 +5,9 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
@@ -18,10 +16,8 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
@@ -63,6 +59,7 @@ import expert.kunkel.berge.model.Region;
 import expert.kunkel.berge.model.Tour;
 import expert.kunkel.berge.ovl.OVL_Flaeche;
 import expert.kunkel.berge.util.GpxUtils;
+import expert.kunkel.berge.util.HtmlExporter;
 import expert.kunkel.berge.util.OsmParserListener;
 
 /**
@@ -168,26 +165,26 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 				30);
 
 		karteTable.getColumn(karteTableModel.getColumnName(0))
-				.setPreferredWidth(200);
+		.setPreferredWidth(200);
 		karteTable.getColumn(karteTableModel.getColumnName(1))
-				.setPreferredWidth(200);
+		.setPreferredWidth(200);
 		karteTable.getColumn(karteTableModel.getColumnName(2))
-				.setPreferredWidth(40);
+		.setPreferredWidth(40);
 		karteTable.getColumn(karteTableModel.getColumnName(3))
-				.setPreferredWidth(40);
+		.setPreferredWidth(40);
 		karteTable.getColumn(karteTableModel.getColumnName(5))
-				.setPreferredWidth(20);
+		.setPreferredWidth(20);
 
 		regionTable.getColumn(regionTableModel.getColumnName(0))
-				.setPreferredWidth(20);
+		.setPreferredWidth(20);
 		regionTable.getColumn(regionTableModel.getColumnName(1))
-				.setPreferredWidth(200);
+		.setPreferredWidth(200);
 		regionTable.getColumn(regionTableModel.getColumnName(2))
-				.setPreferredWidth(150);
+		.setPreferredWidth(150);
 		regionTable.getColumn(regionTableModel.getColumnName(3))
-				.setPreferredWidth(200);
+		.setPreferredWidth(200);
 		regionTable.getColumn(regionTableModel.getColumnName(4))
-				.setPreferredWidth(40);
+		.setPreferredWidth(40);
 
 		tourTable.addMouseListener(this);
 		punktTable.addMouseListener(this);
@@ -251,14 +248,14 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		tourTable.setName("tourTable"); // NOI18N
 		tourTable.setRowSorter(tourRowSorter);
 		tourTable
-				.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		tourTable.getTableHeader().setReorderingAllowed(false);
 		jScrollPane1.setViewportView(tourTable);
 		tourTable
-				.getColumnModel()
-				.getSelectionModel()
-				.setSelectionMode(
-						javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		.getColumnModel()
+		.getSelectionModel()
+		.setSelectionMode(
+				javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
 		jTabbedPane1.addTab("Touren", jScrollPane1);
 
@@ -268,14 +265,14 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		punktTable.setName("punktTable"); // NOI18N
 		punktTable.setRowSorter(punktRowSorter);
 		punktTable
-				.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		punktTable.getTableHeader().setReorderingAllowed(false);
 		jScrollPane2.setViewportView(punktTable);
 		punktTable
-				.getColumnModel()
-				.getSelectionModel()
-				.setSelectionMode(
-						javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		.getColumnModel()
+		.getSelectionModel()
+		.setSelectionMode(
+				javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
 		jTabbedPane1.addTab("Punkte", jScrollPane2);
 
@@ -484,14 +481,14 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
+						layout.createSequentialGroup()
 						.addContainerGap()
 						.addComponent(jTabbedPane1,
 								javax.swing.GroupLayout.DEFAULT_SIZE, 825,
 								Short.MAX_VALUE).addContainerGap()));
 		layout.setVerticalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
+						layout.createSequentialGroup()
 						.addContainerGap()
 						.addComponent(jTabbedPane1,
 								javax.swing.GroupLayout.DEFAULT_SIZE, 589,
@@ -630,8 +627,8 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 				importPunkteOsm(jfc.getSelectedFile());
 			} else {
 				JOptionPane
-						.showMessageDialog(this,
-								"Es können nur OSM- und GPX-Dateien importiert werden!");
+				.showMessageDialog(this,
+						"Es können nur OSM- und GPX-Dateien importiert werden!");
 			}
 		} catch (JAXBException ex) {
 			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
@@ -678,7 +675,7 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 	}
 
 	private void importPunktGpx(JFileChooser jfc) throws JAXBException,
-			FileNotFoundException {
+	FileNotFoundException {
 		List<Punkt> result = GpxUtils.convertGpxPunkteToObjects(jfc
 				.getSelectedFile());
 		punktDao = factory.getPunktDAO();
@@ -726,7 +723,8 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 			Tour tour = tourDao.findById(tourId);
 			if (tour != null) {
-				exportTour(tour, jfc.getSelectedFile().getAbsolutePath());
+				new HtmlExporter().exportTour(tour, jfc.getSelectedFile()
+						.getAbsolutePath());
 			} else {
 				JOptionPane.showMessageDialog(this, "Tour nicht gefunden.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -882,7 +880,8 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 
 			Region region = regionDao.findById(regionId);
 			if (region != null) {
-				exportRegion(region, jfc.getSelectedFile().getAbsolutePath());
+				new HtmlExporter().exportRegion(region, jfc.getSelectedFile()
+						.getAbsolutePath());
 			} else {
 				JOptionPane.showMessageDialog(this, "Region nicht gefunden.",
 						"Fehler", JOptionPane.ERROR_MESSAGE);
@@ -1065,92 +1064,6 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 		regionTableModel.setData(regionDao.selectRegion());
 	}
 
-	private void exportTour(Tour tour, String baseFolder) {
-
-		String folder = baseFolder + File.separator + "tour" + tour.getId()
-				+ File.separator;
-		File ffolder = new File(folder);
-		ffolder.mkdir();
-
-		StringBuffer template = new StringBuffer();
-
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(FOLDER_UMZUG
-					+ File.separator + "template-tour.html"));
-
-			while (br.ready()) {
-				template.append(br.readLine());
-			}
-			br.close();
-		} catch (IOException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		String tourenBericht = template.toString();
-		tourenBericht = tourenBericht.replace("%TOUR_NAME%",
-				tour.getNameAsHtml());
-		try {
-			tourenBericht = tourenBericht.replace("%TOUR_ZEITRAUM%",
-					tour.getZeitraumAsHtml());
-		} catch (SQLException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-			JOptionPane.showMessageDialog(this, "Fehler: " + ex.getMessage(),
-					"Fehler", JOptionPane.ERROR_MESSAGE);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		tourenBericht = tourenBericht.replace("%KARTENEMPFEHLUNGEN%",
-				tour.getKartenAsHtmlList());
-		if (tour.getZusatzinfoMitKmlAsHtml(folder) != null
-				&& !tour.getZusatzinfoMitKmlAsHtml(folder).equals("")) {
-			tourenBericht = tourenBericht.replace(
-					"%ZUSATZINFORMATIONEN%",
-					"<h3>Zusatzinformationen:</h3>"
-							+ tour.getZusatzinfoMitKmlAsHtml(folder));
-		} else {
-			tourenBericht = tourenBericht.replace("%ZUSATZINFORMATIONEN%", "");
-		}
-		if (tour.getBeschreibung() != null
-				&& !tour.getBeschreibungAsHtml().equals("")) {
-			tourenBericht = tourenBericht.replace(
-					"%TOURENBESCHREIBUNG%",
-					"<h3>Kurze Tourenbeschreibung:</h3>"
-							+ tour.getBeschreibungAsHtml());
-		} else {
-			tourenBericht = tourenBericht.replace("%TOURENBESCHREIBUNG%", "");
-		}
-
-		tourenBericht = tourenBericht.replace("%TOURENVERLAUF%",
-				tour.getTourenverlaufAsHtml());
-		tourenBericht = tourenBericht.replace("%TOURENBERICHT%",
-				tour.getTourenberichtAsHtml());
-		tourenBericht = tourenBericht.replace("%JAHR%",
-				Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
-		tourenBericht = tourenBericht
-				.replace("%DATUM%", sdf.format(new Date()));
-
-		FileWriter fw;
-		try {
-			fw = new FileWriter(folder + "index.html");
-			fw.write(tourenBericht);
-			fw.close();
-		} catch (IOException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		// zu guter letzt speichern wir noch den Link auf die Tour
-		tour.setLink("Touren/tour" + tour.getId() + "/index.html");
-		try {
-			tourDao.updateTour(tour);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (SQLException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-			JOptionPane.showMessageDialog(this, "Fehler: " + ex.getMessage(),
-					"Fehler", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
 	private void exportKarte(Karte karte, String absolutePath) {
 		try {
 			String fileName = absolutePath + File.separator + karte.getId()
@@ -1167,36 +1080,6 @@ public class Berge extends javax.swing.JFrame implements MouseListener {
 			raf.writeBytes("[MapLage]" + "\r\n");
 			raf.writeBytes("MapName=" + karte.getTitel() + ", "
 					+ karte.getUntertitel() + "\r\n");
-			raf.writeBytes("DimmFc=100" + "\r\n");
-			raf.writeBytes("ZoomFc=100" + "\r\n");
-			raf.writeBytes("CenterLat=" + polygon.getCentroid().getY() + "\r\n");
-			raf.writeBytes("CenterLong=" + polygon.getCentroid().getX()
-					+ "\r\n");
-			raf.writeBytes("RefOn=1" + "\r\n");
-			raf.writeBytes("RefLat="
-					+ polygon.getExteriorRing().getStartPoint().getY() + "\r\n");
-			raf.writeBytes("RefLong="
-					+ polygon.getExteriorRing().getStartPoint().getX() + "\r\n");
-			raf.close();
-		} catch (IOException ex) {
-			Logger.getLogger(Berge.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-
-	private void exportRegion(Region region, String absolutePath) {
-		try {
-			String fileName = absolutePath + File.separator + region.getId()
-					+ " - " + region.getName() + ".ovl";
-			Polygon polygon = region.getExtent();
-			System.out.println(polygon.toText());
-			OVL_Flaeche flaeche = new OVL_Flaeche(polygon, 1, 1, 1, 103, 1);
-			RandomAccessFile raf = new RandomAccessFile(fileName, "rw");
-			raf.writeBytes("[Symbol 1]\r\n");
-			flaeche.write(raf);
-			raf.writeBytes("[Overlay]" + "\r\n");
-			raf.writeBytes("Symbols=1" + "\r\n");
-			raf.writeBytes("[MapLage]" + "\r\n");
-			raf.writeBytes("MapName=" + region.getName() + "\r\n");
 			raf.writeBytes("DimmFc=100" + "\r\n");
 			raf.writeBytes("ZoomFc=100" + "\r\n");
 			raf.writeBytes("CenterLat=" + polygon.getCentroid().getY() + "\r\n");

@@ -63,10 +63,6 @@ public class Punkt implements java.io.Serializable {
         return name2;
     }
 
-    public String getName2AsHtml() {
-        return name2;
-    }
-
     public void setName2(String name2) {
         this.name2 = name2;
     }
@@ -158,40 +154,5 @@ public class Punkt implements java.io.Serializable {
         hash = 41 * hash + (this.typ != null ? this.typ.hashCode() : 0);
         hash = 41 * hash + (this.url != null ? this.url.hashCode() : 0);
         return hash;
-    }
-
-    public String getNameAsHtml() {
-        String result = null;
-        if (url == null || url.equals("")) {
-            result = StringUtils.encodeHTML(getName());
-            if (getName2AsHtml() != null && !getName2AsHtml().equals("")) {
-                result += " (" + getName2AsHtml() + ")";
-            }
-        } else {
-            result = "<a href=\"" + getUrl() + "\" target=\"_blank\">" + StringUtils.encodeHTML(getName());
-            if (getName2AsHtml() != null && !getName2AsHtml().equals("")) {
-                result += " (" + getName2AsHtml() + ")";
-            }
-            result += "</a>";
-        }
-        return result;
-    }
-
-    public String getNameAndHoeheAsHtml() {
-        String result = null;
-        if (url == null || url.equals("")) {
-            result = getNameAsHtml();
-            result += ", ";
-            result += getHoehe();
-            result += "m";
-        } else {
-            result = "<a href=\"" + getUrl() + "\" target=\"_blank\">" + getNameAsHtml();
-            result += ", ";
-            result += getHoehe();
-            result += "m";
-            result += "</a>";
-        }
-
-        return result;
     }
 }
